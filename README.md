@@ -1,5 +1,5 @@
-# Amadeus_Ember
-EMBER: Obsidian Protocol 헬퍼 Amadeus_Ember입니다.
+# AmadeusEmber By Khalid
+EMBER: Obsidian Protocol 헬퍼 AmadeusEmber입니다.
 
 
 -권장사항

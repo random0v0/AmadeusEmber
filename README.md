@@ -17,9 +17,13 @@ EMBER: Obsidian Protocol 헬퍼 AmadeusEmber입니다.
 
 -다운로드 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 
-![1](https://github.com/user-attachments/assets/bf2a190f-6576-4d26-b84c-1158ed50baf3)
+![1](https://github.com/user-attachments/assets/cc4e8092-4d9a-452b-9a7a-dcf77edffdab)
 ![2](https://github.com/user-attachments/assets/502bdf87-c0da-4a02-91c4-2d24c30fbc1b)
+![2](https://github.com/user-attachments/assets/0e1336db-9d7b-4aee-8bd7-be17fee533ff)
+![3](https://github.com/user-attachments/assets/27172be0-2068-43fd-9170-73d6d7e73bb1)
 ![3](https://github.com/user-attachments/assets/fa05b23e-e040-4838-9526-9248261719cf)
 ![4](https://github.com/user-attachments/assets/539d28d0-e563-4424-bdc6-4c1aed951353)
-![5](https://github.com/user-attachments/assets/cb85259c-8b6a-48ec-9693-dbe9335fadfa)
-![6](https://github.com/user-attachments/assets/01aa94dd-1086-4cc7-a142-e0ded27bcaa6)
+![4](https://github.com/user-attachments/assets/6011c713-e1e2-4592-85cf-e9376664cfdb)
+![5](https://github.com/user-attachments/assets/baffced0-8f58-44ba-94e9-1644b3b180f6)
+
+

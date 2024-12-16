@@ -9,10 +9,11 @@ EMBER: Obsidian Protocol 헬퍼 AmadeusEmber입니다.
 
 -기능
 1. 자리에 상관없는 선공 후공 선택 배치 기능
-2. 메인카드 세컨더리 카드 자동 배치
-3. 메인미션 카드 랜덤 뽑기
-4. 턴 종료 후 데이터 저장, 불러오기
-5. 턴 카운팅
+2. 맵 선택 기능
+3. 메인카드 세컨더리 카드 자동 배치
+4. 메인미션 카드 랜덤 뽑기
+5. 턴 종료 후 게임 기록 저장, 불러오기
+6. 턴 카운팅
 
 -다운로드 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 

@@ -1,5 +1,5 @@
 # AmadeusEmber By Khalid
-EMBER: Obsidian Protocol 헬퍼 AmadeusEmber입니다.
+EMBER: Obsidian Protocol 서드파티 어플리케이션 AmadeusEmber입니다.
 
 
 -권장사항

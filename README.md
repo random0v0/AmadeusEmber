@@ -18,7 +18,7 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 
 -----------------------------------------------
 
-업데이트 : 2024-12-18 Version 1.4
+업데이트 일시 : 2024-12-18 Version 1.4
 
 -다운로드 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 

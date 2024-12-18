@@ -1,5 +1,6 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
+-----------------------------------------------
 
 
 -권장사항
@@ -14,6 +15,10 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 4. 메인미션 카드 랜덤 뽑기
 5. 턴 종료 후 게임 기록 저장, 불러오기
 6. 턴 카운팅 기능
+
+-----------------------------------------------
+
+업데이트 : 2024-12-19 Version 1.4
 
 -다운로드 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 

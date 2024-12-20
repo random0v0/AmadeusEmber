@@ -23,7 +23,7 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 
 마지막 업데이트 : 2024-12-18 Version 1.4
 
--APK 다운로드 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
+-APK 버전 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 
 
 -웹 버전 : https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/

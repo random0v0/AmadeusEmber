@@ -1,6 +1,15 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 -----------------------------------------------
+마지막 업데이트 : 2024-12-18 Version 1.4
+
+-APK 버전 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
+
+
+-웹 버전 : https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/
+
+
+-----------------------------------------------
 
 
 -권장사항
@@ -20,13 +29,6 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 6. 턴 카운팅 기능
 
 -----------------------------------------------
-
-마지막 업데이트 : 2024-12-18 Version 1.4
-
--APK 버전 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
-
-
--웹 버전 : https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/
 
 ![1](https://github.com/user-attachments/assets/cc4e8092-4d9a-452b-9a7a-dcf77edffdab)
 ![2](https://github.com/user-attachments/assets/502bdf87-c0da-4a02-91c4-2d24c30fbc1b)

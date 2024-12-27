@@ -9,7 +9,7 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 [웹 버전](https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/)
 
 
-[문의사항](https://github.com/random0v0/AmadeusEmber/issues)
+[문의 사항](https://github.com/random0v0/AmadeusEmber/issues)
 
 
 -----------------------------------------------

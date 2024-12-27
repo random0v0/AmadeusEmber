@@ -1,7 +1,7 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 -----------------------------------------------
-마지막 업데이트 : 2024-12-18 Version 1.4
+마지막 업데이트 : 2024-12-27 Version 1.5
 
 -APK 버전 : https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber
 

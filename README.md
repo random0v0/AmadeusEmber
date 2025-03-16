@@ -3,8 +3,6 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 -----------------------------------------------
 마지막 업데이트 : 2025-03-16 Version 1.7
 
-Support Languages : Korean, English
-
 [APK 버전](https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber)
 
 
@@ -12,6 +10,8 @@ Support Languages : Korean, English
 
 
 [문의 사항](https://github.com/random0v0/AmadeusEmber/issues)
+
+Support Languages : Korean, English
 
 
 -----------------------------------------------

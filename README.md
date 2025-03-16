@@ -1,7 +1,7 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 -----------------------------------------------
-마지막 업데이트 : 2025-01-24 Version 1.6
+마지막 업데이트 : 2025-03-16 Version 1.7
 
 [APK 버전](https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber)
 
@@ -31,6 +31,7 @@ EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
 5. 턴 종료 후 게임 기록 저장, 불러오기
 6. 턴 카운팅 기능
 7. 선공/후공 점수 카운팅
+8. 메인미션 카드 커스텀 선택 기능
 
 -----------------------------------------------
 

@@ -1,39 +1,36 @@
 # AmadeusEmber By Khalid
-EMBER: Obsidian Protocol 서드파티 애플리케이션 AmadeusEmber입니다.
+EMBER: Obsidian Protocol Third-Party Application - AmadeusEmber
 -----------------------------------------------
-마지막 업데이트 : 2025-03-16 Version 1.7
+Last Update : 2025-03-16 Version 1.7
 
-[APK 버전](https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber)
-
-
-[WEB 버전](https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/)
+<a href="https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber"><img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/></a>
 
 
-[문의 사항](https://github.com/random0v0/AmadeusEmber/issues)
+<a href="https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/"><img src="https://img.shields.io/badge/Google_chrome-4285F4?style=for-the-badge&logo=Google-chrome&logoColor=white"/></a>
 
-Support languages : Korean, English
+
+<a href="https://discord.gg/gJ5P5Ataqt"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"/></a>
+
+Support languages : 한국어, English
 
 
 -----------------------------------------------
 
 
--권장사항
-1. 안드로이드 버전 9.0 이상
-2. 태블릿 사용 권장
-3. 웹 버전 사용 시 크롬 기반 브라우저 사용을 권장합니다.
-4. 웹 버전 사용 시 스마트폰 자체 화면 회전 기능을 이용해 가로 화면으로 사용하는 것을 권장합니다.
-5. 웹 버전 사용 시 기록 저장이 더 이상 안될 경우 "기록 초기화" 기능을 사용해 주세요.
+-Recommendations
+1. Android version 9.0 or higher required.
+2. When using the web version, a Chromium-based browser is recommended.
 
 
--기능
-1. 자리에 상관없는 선공/후공 선택 및 배치
-2. 맵 선택 기능
-3. 메인카드 & 세컨더리 카드 자동 배치
-4. 메인미션 카드 랜덤 뽑기
-5. 턴 종료 후 게임 기록 저장, 불러오기
-6. 턴 카운팅 기능
-7. 선공/후공 점수 카운팅
-8. 메인미션 카드 커스텀 선택 기능
+-Features
+1. Select and assign First Player/Second Player regardless of seating position
+2. Battlefield selection
+3. Automatic placement of main and secondary task cards
+4. Random drawing of main task card
+5. Save and load game records after round ends
+6. Round counting
+7. Score tracking for First Player/Second Player
+8. Custom selection of main mission cards
 
 -----------------------------------------------
 

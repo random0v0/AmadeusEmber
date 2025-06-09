@@ -20,6 +20,7 @@ Support languages : 한국어, English, 日本語, 中文
 -Recommendations
 1. Android version 9.0 or higher required.
 2. When using the web version, a Chromium-based browser is recommended.
+3. Please use the latest version of the Chromium-based browser. (If your phone's specifications are low, it may not work.)
 
 
 -Features

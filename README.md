@@ -23,6 +23,10 @@ Support languages : 한국어, English, 日本語, 中文
 3. If it doesn't work, try the following method. (iOS only)
 ![image](https://github.com/user-attachments/assets/8eec1403-eb91-434f-987f-64a5cc889bbf)
 
+Second Method
+![image](https://github.com/user-attachments/assets/9e699c96-0589-4011-a073-7747b245c721)
+
+
 
 
 -Features

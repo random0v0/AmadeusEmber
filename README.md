@@ -20,7 +20,7 @@ Support languages : 한국어, English, 日本語, 中文
 -Recommendations
 1. Android version 9.0 or higher required.
 2. When using the web version, a Chromium-based browser is recommended. Please use the latest version of the Chromium-based browser.
-3. If it doesn't work, try the following method. (IOS only)
+3. If it doesn't work, try the following method. (iOS only)
 ![image](https://github.com/user-attachments/assets/8eec1403-eb91-434f-987f-64a5cc889bbf)
 
 

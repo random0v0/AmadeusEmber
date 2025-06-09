@@ -1,7 +1,7 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol Third-Party Application - AmadeusEmber
 -----------------------------------------------
-Last Update : 2025-03-16 Version 1.7
+Last Update : 2025-06-09 Version 1.8
 
 <a href="https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber"><img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/></a>
 
@@ -11,7 +11,7 @@ Last Update : 2025-03-16 Version 1.7
 
 <a href="https://discord.gg/gJ5P5Ataqt"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"/></a>
 
-Support languages : 한국어, English
+Support languages : 한국어, English, 日本語, 中文 
 
 
 -----------------------------------------------
@@ -34,13 +34,23 @@ Support languages : 한국어, English
 
 -----------------------------------------------
 
-![1](https://github.com/user-attachments/assets/cc4e8092-4d9a-452b-9a7a-dcf77edffdab)
-![2](https://github.com/user-attachments/assets/502bdf87-c0da-4a02-91c4-2d24c30fbc1b)
-![2](https://github.com/user-attachments/assets/0e1336db-9d7b-4aee-8bd7-be17fee533ff)
-![3](https://github.com/user-attachments/assets/27172be0-2068-43fd-9170-73d6d7e73bb1)
-![3](https://github.com/user-attachments/assets/fa05b23e-e040-4838-9526-9248261719cf)
-![4](https://github.com/user-attachments/assets/539d28d0-e563-4424-bdc6-4c1aed951353)
-![4](https://github.com/user-attachments/assets/6011c713-e1e2-4592-85cf-e9376664cfdb)
-![5](https://github.com/user-attachments/assets/baffced0-8f58-44ba-94e9-1644b3b180f6)
+![1](https://github.com/user-attachments/assets/6d6385b5-c39f-4899-8ad0-4d885958e4eb)
+
+![image](https://github.com/user-attachments/assets/9e096296-cbf5-43eb-9996-44fd2a57af3e)
+
+![image](https://github.com/user-attachments/assets/73d11ced-689f-4ebb-9963-5ab5b5f3371a)
+
+![image](https://github.com/user-attachments/assets/15a9fca4-c1be-4f93-b5f6-1ca49d0fb98c)
+
+![image](https://github.com/user-attachments/assets/bbac925f-e03d-41ff-bdc7-91d81b71cc92)
+
+![image](https://github.com/user-attachments/assets/b048901e-d193-4ddc-8467-85f2cec02867)
+
+![image](https://github.com/user-attachments/assets/542e2c46-9dd4-4989-b3a5-b56fa935e254)
+
+![image](https://github.com/user-attachments/assets/ba018add-1512-4607-992f-0028732278d1)
+
+![image](https://github.com/user-attachments/assets/9cd6721c-4374-49bb-a599-41d30cab6c22)
+
 
 

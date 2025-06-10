@@ -1,119 +1,206 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | AmadeusEmber</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmadeusEmber Lite</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 스플래시 스크린 -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <h2 class="splash-title">AmadeusEmber Lite</h2>
+            <p class="splash-subtitle">Created by Khalid</p>
+            <div class="loading-spinner"></div>
         </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">AmadeusEmber</div>
-      </div>
     </div>
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
+    <div class="container">
+        <header>
+            <h1>AmadeusEmber Lite</h1>
+            <p class="creator-credit">Created by Khalid</p>
+            <div class="language-selector">
+                <label for="languageSelect">Language :</label>
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="kr">한국어</option>
+                    <option value="en">English</option>
+                    <option value="jp">日本語</option>
+                    <option value="cn">中文</option>
+                </select>
+            </div>
+        </header>
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/AmadeusEmber_web.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/AmadeusEmber_web.data",
-        frameworkUrl: buildUrl + "/AmadeusEmber_web.framework.js",
-        codeUrl: buildUrl + "/AmadeusEmber_web.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Khalid",
-        productName: "AmadeusEmber",
-        productVersion: "1.8",
-        showBanner: unityShowBanner,
-      };
+        <!-- 맵 카드 선택 -->
+        <section class="map-section">
+            <h2>맵 카드 선택</h2>
+            <div class="card-grid" id="mapCards">
+                <!-- 맵 카드들이 동적으로 생성됩니다 -->
+            </div>
+        </section>
 
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
+        <!-- 메인 미션 카드 선택 -->
+        <section class="mission-section">
+            <h2>메인 미션 카드</h2>
+            <div class="mission-info">
+                <p>10개 중 3개가 랜덤으로 선택됩니다. 클릭하여 하나씩 제거하세요.</p>
+                <p><span id="remainingCardsLabel">남은 카드:</span> <span id="remainingCards">3</span></p>
+            </div>
+            <div class="card-grid" id="missionCards">
+                <!-- 미션 카드들이 동적으로 생성됩니다 -->
+            </div>
+            <button id="customMissionBtn" class="custom-btn">커스텀 미션 선택</button>
+        </section>
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
+        <!-- 세컨더리 미션 카드 선택 -->
+        <section class="secondary-mission-section">
+            <h2>세컨더리 미션 카드</h2>
+            <div class="secondary-mission-buttons">
+                <button id="firstPlayerSecondaryBtn" class="secondary-btn">선공 세컨더리 카드 선택</button>
+                <button id="secondPlayerSecondaryBtn" class="secondary-btn">후공 세컨더리 카드 선택</button>
+            </div>
+        </section>
 
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
+        <!-- 선택된 카드 표시 -->
+        <section class="selected-section">
+            <h2 id="selected-cards-title">선택된 카드</h2>
+            <div class="selected-cards">
+                <div class="selected-card">
+                    <h3 id="selectedMapLabel">선택된 맵:</h3>
+                    <div id="selectedMapDisplay">
+                        <p id="selectedMap">Empty</p>
+                    </div>
+                </div>
+                <div class="selected-card">
+                    <h3 id="finalMissionLabel">최종 미션:</h3>
+                    <div id="selectedMissionDisplay">
+                        <p id="finalMission">Empty</p>
+                    </div>
+                </div>
+                <div class="selected-card">
+                    <h3 id="firstSecondaryLabel">선공 세컨더리:</h3>
+                    <div id="selectedFirstSecondaryDisplay">
+                        <p id="selectedFirstSecondary">Empty</p>
+                    </div>
+                </div>
+                <div class="selected-card">
+                    <h3 id="secondSecondaryLabel">후공 세컨더리:</h3>
+                    <div id="selectedSecondSecondaryDisplay">
+                        <p id="selectedSecondSecondary">Empty</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+        <!-- 라운드 카운터 -->
+        <section class="round-section">
+            <h2><span id="roundLabel">라운드:</span> <span id="roundCounter">1</span>/5</h2>
+            <button id="roundPlusBtn" class="round-btn">+</button>
+        </section>
 
-        unityShowBanner('WebGL builds are not supported on mobile devices.');
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        <!-- 점수 섹션 -->
+        <section class="score-section">
+            <div class="score-card">
+                <h3 id="firstLabel">선공</h3>
+                <div class="score-display">
+                    <span id="firstPlayerScore">0</span>
+                </div>
+                <div class="score-buttons">
+                    <button class="score-btn minus" onclick="changeScore('first', -1)">-</button>
+                    <button class="score-btn plus" onclick="changeScore('first', 1)">+</button>
+                </div>
+            </div>
+            <div class="score-card">
+                <h3 id="secondLabel">후공</h3>
+                <div class="score-display">
+                    <span id="secondPlayerScore">0</span>
+                </div>
+                <div class="score-buttons">
+                    <button class="score-btn minus" onclick="changeScore('second', -1)">-</button>
+                    <button class="score-btn plus" onclick="changeScore('second', 1)">+</button>
+                </div>
+            </div>
+        </section>
 
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
+        <button id="resetAllBtn" class="reset-all-btn">초기화</button>
+    </div>
 
-      loadingBar.style.display = "block";
+    <!-- 맵 선택 모달 -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="mapModalTitle">맵 선택</h2>
+                <span class="close" onclick="closeMapModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="mapModalImage" src="" alt="" class="modal-image">
+                <p id="mapModalDescription">이 맵을 선택하시겠습니까?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" onclick="confirmMapSelection()" id="mapModalConfirmBtn">선택</button>
+                <button class="modal-btn cancel-btn" onclick="closeMapModal()" id="mapModalCloseBtn">닫기</button>
+            </div>
+        </div>
+    </div>
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          fullscreenButton.onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    </script>
-  </body>
-</html>
+    <!-- 미션 제거 확인 모달 -->
+    <div id="missionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="missionModalTitle">미션 카드 제거</h2>
+                <span class="close" onclick="closeMissionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="missionModalImage" src="" alt="" class="modal-image">
+                <p id="missionModalDescription">이 미션 카드를 제거하시겠습니까?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" onclick="confirmMissionRemoval()" id="missionModalConfirmBtn">제거</button>
+                <button class="modal-btn cancel-btn" onclick="closeMissionModal()" id="missionModalCloseBtn">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 커스텀 미션 선택 모달 -->
+    <div id="customMissionModal" class="modal">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header">
+                <h2 id="customMissionModalTitle">커스텀 미션 선택</h2>
+                <span class="close" onclick="closeCustomMissionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="customMissionModalDescription">원하는 미션 카드를 선택하세요. 1개만 선택 가능합니다.</p>
+                <div class="custom-mission-grid" id="customMissionGrid">
+                    <!-- 모든 미션 카드들이 여기에 표시됩니다 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" id="customMissionConfirmBtn" onclick="confirmCustomMissionSelection()">선택 완료</button>
+                <button class="modal-btn cancel-btn" id="customMissionCancelBtn" onclick="closeCustomMissionModal()">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 세컨더리 미션 선택 모달 -->
+    <div id="secondaryMissionModal" class="modal">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header">
+                <h2 id="secondaryMissionModalTitle">세컨더리 미션 선택</h2>
+                <span class="close" onclick="closeSecondaryMissionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="secondaryMissionModalDescription">원하는 세컨더리 미션 카드를 선택하세요. 1개만 선택 가능합니다.</p>
+                <div class="custom-mission-grid" id="secondaryMissionGrid">
+                    <!-- 모든 세컨더리 미션 카드들이 여기에 표시됩니다 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" id="secondaryMissionConfirmBtn" onclick="confirmSecondaryMissionSelection()">선택 완료</button>
+                <button class="modal-btn cancel-btn" id="secondaryMissionCancelBtn" onclick="closeSecondaryMissionModal()">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

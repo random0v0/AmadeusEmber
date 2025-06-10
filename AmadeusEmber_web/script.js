@@ -50,6 +50,7 @@ const textData = {
         reset: '초기화',
         selectedCards: '선택된 카드',
         empty: 'Empty',
+        resetConfirmMessage: '모든 게임 데이터를 초기화하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.',
         // 알림 메시지들
         missionAlreadySelected: '이미 미션이 선택되었습니다.',
         selectAtLeastOneMission: '메인미션 카드를 선택해주세요.',
@@ -97,6 +98,7 @@ const textData = {
         reset: 'Reset',
         selectedCards: 'Selected Cards',
         empty: 'Empty',
+        resetConfirmMessage: 'Do you want to reset all game data?\n\nThis action cannot be undone.',
         // 알림 메시지들
         missionAlreadySelected: 'Mission is already selected.',
         selectAtLeastOneMission: 'Please select at least one task.',
@@ -144,6 +146,7 @@ const textData = {
         reset: 'リセット',
         selectedCards: '選択されたカード',
         empty: 'Empty',
+        resetConfirmMessage: 'すべてのゲームデータをリセットしますか？\n\nこの操作は元に戻せません。',
         // 알림 메시지들
         missionAlreadySelected: 'すでにタスクが選択されています。',
         selectAtLeastOneMission: 'メインタスクをが選択してください。',
@@ -191,6 +194,7 @@ const textData = {
         reset: '初始化',
         selectedCards: '已选择卡片',
         empty: 'Empty',
+        resetConfirmMessage: '确定要重置所有游戏数据吗？\n\n此操作无法撤销。',
         // 알림 메시지들
         missionAlreadySelected: '已选择主要任务卡。',
         selectAtLeastOneMission: '请选择主要任务卡。',
@@ -735,7 +739,7 @@ function confirmMissionRemoval() {
 
 // 전체 게임 초기화 함수
 function resetAllGame() {
-    if (confirm('모든 게임 데이터를 초기화하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.')) {
+    if (confirm(textData[currentLanguage].resetConfirmMessage)) {
         // 모든 변수 초기화
         currentRound = 1;
         firstPlayerScore = 0;

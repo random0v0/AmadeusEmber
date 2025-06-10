@@ -1,7 +1,7 @@
 # AmadeusEmber By Khalid
 EMBER: Obsidian Protocol Third-Party Application - AmadeusEmber
 -----------------------------------------------
-Last Update : 2025-06-09 Version 1.8
+Last Update : 2025-06-10 Version 1.9
 
 <a href="https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber"><img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/></a>
 

@@ -193,6 +193,9 @@ header h1 {
 .round-section h2 {
     font-size: 1.2rem;
     color: #495057;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .round-buttons {
@@ -415,6 +418,51 @@ section h2 {
 .mission-info p:last-child {
     color: #6c757d;
     font-size: 0.9rem;
+}
+
+/* 맵 정보 */
+.map-info {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.map-info p {
+    margin: 5px 0;
+    color: #495057;
+    font-weight: bold;
+}
+
+/* 세컨더리 미션 정보 */
+.secondary-mission-info {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.secondary-mission-info p {
+    margin: 5px 0;
+    color: #495057;
+    font-weight: bold;
+}
+
+/* 선택된 카드 정보 */
+.selected-cards-info {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.selected-cards-info p {
+    margin: 5px 0;
+    color: #495057;
+    font-weight: bold;
 }
 
 /* 커스텀 버튼 */

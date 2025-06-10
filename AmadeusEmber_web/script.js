@@ -12,6 +12,7 @@ let isCustomMissionSelected = false; // 커스텀 미션 선택 여부
 let selectedFirstSecondaryCard = null; // 선공 세컨더리 카드
 let selectedSecondSecondaryCard = null; // 후공 세컨더리 카드
 let currentSecondaryPlayer = null; // 현재 선택 중인 플레이어 (first/second)
+let isModalClosing = false; // 모달 닫기 중복 실행 방지
 
 // 현재 언어 설정
 let currentLanguage = 'kr';
@@ -20,6 +21,7 @@ let currentLanguage = 'kr';
 const textData = {
     kr: {
         mapCardSelection: '맵 카드 선택',
+        mapDescription: '한 장만 선택 가능합니다.',
         mapSelection: '맵 선택 :',
         selectMapConfirm: '맵을 선택하시겠습니까?',
         select: '선택',
@@ -35,8 +37,9 @@ const textData = {
         remove: '제거',
         removeMissionConfirm: '미션 카드를 제거하시겠습니까?',
         secondaryMissionCard: '세컨더리 미션 카드',
-        firstPlayerSecondary: '선공 세컨더리 카드 선택',
-        secondPlayerSecondary: '후공 세컨더리 카드 선택',
+        secondaryMissionDescription: '각각 한 장씩 선택 가능합니다.',
+        firstPlayerSecondary: '선공 세컨더리 미션 선택',
+        secondPlayerSecondary: '후공 세컨더리 미션 선택',
         firstPlayerDescription: '선공의 세컨더리 미션 카드를 선택하세요. 한 장만 선택 가능합니다.',
         selectSecondaryConfirm: '세컨더리 미션을 선택하시겠습니까?',
         secondPlayerDescription: '후공의 세컨더리 미션 카드를 선택하세요. 한 장만 선택 가능합니다.',
@@ -49,6 +52,7 @@ const textData = {
         second: '후공',
         reset: '초기화',
         selectedCards: '선택된 카드',
+        selectedCardsDescription: '이미지 클릭 시 확대됩니다.',
         empty: 'Empty',
         resetConfirmMessage: '모든 게임 데이터를 초기화하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.',
         // 알림 메시지들
@@ -68,6 +72,7 @@ const textData = {
     },
     en: {
         mapCardSelection: 'Select a map',
+        mapDescription: 'You can only select one.',
         mapSelection: 'Map :',
         selectMapConfirm: 'Do you want to select a map?',
         select: 'Confirm',
@@ -83,6 +88,7 @@ const textData = {
         remove: 'Remove',
         removeMissionConfirm: 'Do you want to remove this mission card?',
         secondaryMissionCard: 'Secondary task',
+        secondaryMissionDescription: 'Each can be selected one by one.',
         firstPlayerSecondary: 'First Player',
         secondPlayerSecondary: 'Second Player',
         firstPlayerDescription: 'Please select the secondary task of the first ship. You can only select one.',
@@ -97,6 +103,7 @@ const textData = {
         second: 'Second',
         reset: 'Reset',
         selectedCards: 'Selected Cards',
+        selectedCardsDescription: 'Click image to enlarge',
         empty: 'Empty',
         resetConfirmMessage: 'Do you want to reset all game data?\n\nThis action cannot be undone.',
         // 알림 메시지들
@@ -116,6 +123,7 @@ const textData = {
     },
     jp: {
         mapCardSelection: 'マップカードの選択',
+        mapDescription: '1枚のみ選択可能です。',
         mapSelection: 'マップ選択 :',
         selectMapConfirm: 'マップを選択しますか？',
         select: '選択',
@@ -131,11 +139,12 @@ const textData = {
         remove: '削除',
         removeMissionConfirm: 'このメインタスクを削除しますか？',
         secondaryMissionCard: 'セカンダリータスク',
+        secondaryMissionDescription: 'それぞれ1枚ずつ選択可能です。',
         firstPlayerSecondary: '先手',
         secondPlayerSecondary: '後手',
-        firstPlayerDescription: '先手のセカンダリ タスクを選択します。 1つだけ選択可能です。',
-        selectSecondaryConfirm: 'セカンダリ タスクを選択しますか？',
-        secondPlayerDescription: '後手のセカンダリ タスクを選択します。 1つだけ選択可能です。',
+        firstPlayerDescription: '先手のセカンダリタスクを選択します。1つだけ選択可能です。',
+        selectSecondaryConfirm: 'セカンダリタスクを選択しますか？',
+        secondPlayerDescription: '後手のセカンダリタスクを選択します。1つだけ選択可能です。',
         selectedMap: 'マップ :',
         finalMission: 'メインタスク :',
         firstSecondary: '先手 :',
@@ -145,11 +154,12 @@ const textData = {
         second: '後手',
         reset: 'リセット',
         selectedCards: '選択されたカード',
+        selectedCardsDescription: 'クリックして拡大表示',
         empty: 'Empty',
         resetConfirmMessage: 'すべてのゲームデータをリセットしますか？\n\nこの操作は元に戻せません。',
         // 알림 메시지들
         missionAlreadySelected: 'すでにタスクが選択されています。',
-        selectAtLeastOneMission: 'メインタスクをが選択してください。',
+        selectAtLeastOneMission: 'メインタスクを選択してください。',
         customMissionAutoConfirmed: 'カスタムタスクが確定されました！',
         customMissionsSet: '枚のタスクが設定されました！クリックして1枚を選んでください。',
         mapAlreadySelected: 'すでにマップが選択されています。初期化後に再選択してください。',
@@ -164,6 +174,7 @@ const textData = {
     },
     cn: {
         mapCardSelection: '请选择一张地图',
+        mapDescription: '只能选择一张。',
         mapSelection: '地图 :',
         selectMapConfirm: '确定要选择地图吗？',
         select: '选择',
@@ -179,6 +190,7 @@ const textData = {
         remove: '删除',
         removeMissionConfirm: '确定要删除这个任务卡吗？',
         secondaryMissionCard: '次要任务卡',
+        secondaryMissionDescription: '每个可以单独选择。',
         firstPlayerSecondary: '先手',
         secondPlayerSecondary: '后手',
         firstPlayerDescription: '请选择先手的次要任务卡。 只能选择一个。',
@@ -193,13 +205,14 @@ const textData = {
         second: '后手',
         reset: '初始化',
         selectedCards: '已选择卡片',
+        selectedCardsDescription: '点击图片放大',
         empty: 'Empty',
         resetConfirmMessage: '确定要重置所有游戏数据吗？\n\n此操作无法撤销。',
         // 알림 메시지들
         missionAlreadySelected: '已选择主要任务卡。',
         selectAtLeastOneMission: '请选择主要任务卡。',
         customMissionAutoConfirmed: '自定义任务已确认！',
-        customMissionsSet: '已设置张任务卡！点击选择一张。',
+        customMissionsSet: '已设置{0}张任务卡！点击选择一张。',
         mapAlreadySelected: '已选择战场。请重置后重新选择。',
         mapSelected: '战场已选择！',
         gameReset: '已重置！',
@@ -362,6 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 앱 초기화
 function initializeApp() {
+    // 자동 언어 감지 및 설정
+    detectAndSetLanguage();
+    
     // 스플래시 스크린 처리
     const splashScreen = document.getElementById('splashScreen');
     
@@ -470,6 +486,68 @@ function initializeApp() {
     });
 }
 
+// 자동 언어 감지 및 설정 함수
+function detectAndSetLanguage() {
+    // 브라우저 언어 설정 가져오기
+    const browserLanguage = navigator.language || navigator.userLanguage;
+    
+    // 지원하는 언어 목록
+    const supportedLanguages = ['kr', 'en', 'jp', 'cn'];
+    
+    // 언어 코드 매핑 (브라우저 언어 -> 앱 언어)
+    const languageMapping = {
+        'ko': 'kr',           // 한국어
+        'ko-KR': 'kr',        // 한국어 (한국)
+        'en': 'en',           // 영어
+        'en-US': 'en',        // 영어 (미국)
+        'en-GB': 'en',        // 영어 (영국)
+        'ja': 'jp',           // 일본어
+        'ja-JP': 'jp',        // 일본어 (일본)
+        'zh': 'cn',           // 중국어
+        'zh-CN': 'cn',        // 중국어 (간체)
+        'zh-TW': 'cn',        // 중국어 (번체)
+        'zh-HK': 'cn'         // 중국어 (홍콩)
+    };
+    
+    // 기본 언어 (영어)
+    let detectedLanguage = 'en';
+    
+    // 1. 정확한 매칭 시도
+    if (languageMapping[browserLanguage]) {
+        detectedLanguage = languageMapping[browserLanguage];
+    } else {
+        // 2. 언어 코드만 추출하여 매칭 시도 (예: 'ko-KR' -> 'ko')
+        const primaryLanguage = browserLanguage.split('-')[0];
+        if (languageMapping[primaryLanguage]) {
+            detectedLanguage = languageMapping[primaryLanguage];
+        } else {
+            // 3. 지원하는 언어 목록에서 부분 매칭 시도
+            for (const lang of supportedLanguages) {
+                if (browserLanguage.toLowerCase().includes(lang)) {
+                    detectedLanguage = lang;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // 언어 설정 적용
+    currentLanguage = detectedLanguage;
+    
+    // 언어 선택 UI 업데이트 (select 요소 값 설정)
+    updateLanguageSelectUI();
+    
+    console.log(`Browser language: ${browserLanguage}, Detected language: ${detectedLanguage}`);
+}
+
+// 언어 선택 UI 업데이트 함수 (select 요소용)
+function updateLanguageSelectUI() {
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.value = currentLanguage;
+    }
+}
+
 // 커스텀 미션 선택 모달 표시
 function showCustomMissionModal() {
     // 최종 미션이 결정되었거나 커스텀 미션이 선택된 경우 초기화 후 선택 가능하다는 팝업 표시
@@ -477,6 +555,9 @@ function showCustomMissionModal() {
         showNotification(textData[currentLanguage].missionAlreadySelected, 'info');
         return;
     }
+    
+    // 모달 닫기 플래그 초기화
+    isModalClosing = false;
     
     const texts = textData[currentLanguage];
     
@@ -501,6 +582,11 @@ function showCustomMissionModal() {
             <img src="data/maintask/${currentLanguage}/${card.image}" alt="${card.name}">
             <h4>${card.name}</h4>
         `;
+        
+        // 이미지 에러 처리 추가
+        const img = cardElement.querySelector('img');
+        handleImageError(img, card.name);
+        
         cardElement.addEventListener('click', () => toggleCustomMissionSelection(cardElement, card, index));
         customMissionGrid.appendChild(cardElement);
     });
@@ -530,9 +616,9 @@ function toggleCustomMissionSelection(cardElement, card, index) {
         const isSelected = cardElement.classList.contains('selected');
         
         if (isSelected) {
-            // 선택 해제
-            cardElement.classList.remove('selected');
-            selectedCustomMissions = selectedCustomMissions.filter(item => item.id !== card.id);
+            // 이미 선택된 카드는 선택 해제하지 않음 (무시)
+            closeMissionModal();
+            return;
         } else {
             // 기존 선택된 카드들 모두 해제
             const selectedCards = document.querySelectorAll('.custom-mission-card.selected');
@@ -559,12 +645,16 @@ function toggleCustomMissionSelection(cardElement, card, index) {
 
 // 커스텀 미션 선택 모달 닫기
 function closeCustomMissionModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
     const modal = document.getElementById('customMissionModal');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.remove('closing');
         selectedCustomMissions = [];
+        isModalClosing = false;
     }, 300);
 }
 
@@ -602,14 +692,25 @@ function confirmCustomMissionSelection() {
             card.classList.add('removed');
         });
         
-        // 선택된 카드만 활성화하고 강조
-        const selectedCardElement = document.querySelector('.mission-card');
+        // 선택된 카드만 활성화하고 강조 (이름으로 찾기)
+        const selectedCardElement = document.querySelector(`.mission-card h3[data-mission-name="${selectedCard.name}"]`)?.closest('.mission-card') || 
+                                   document.querySelector('.mission-card');
         if (selectedCardElement) {
             selectedCardElement.classList.remove('removed');
             selectedCardElement.classList.add('selected');
         }
         
         showNotification(textData[currentLanguage].customMissionAutoConfirmed, 'success');
+        
+        // 남은 카드 텍스트 숨기기
+        const remainingCardsLabel = document.getElementById('remainingCardsLabel');
+        if (remainingCardsLabel) {
+            remainingCardsLabel.style.display = 'none';
+        }
+        const remainingCardsElement = document.getElementById('remainingCards');
+        if (remainingCardsElement) {
+            remainingCardsElement.style.display = 'none';
+        }
     } else {
         // 선택 상태 초기화 (여러 개 선택된 경우)
         finalMissionCard = null;
@@ -658,6 +759,9 @@ function showMapModal(cardElement) {
         return;
     }
     
+    // 모달 닫기 플래그 초기화
+    isModalClosing = false;
+    
     const mapTitle = cardElement.querySelector('h3').textContent;
     const mapImage = cardElement.querySelector('.card-image').src;
     const texts = textData[currentLanguage];
@@ -690,12 +794,16 @@ function showMapModal(cardElement) {
 
 // 맵 선택 모달 닫기
 function closeMapModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
     const modal = document.getElementById('mapModal');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.remove('closing');
         currentModalCard = null;
+        isModalClosing = false;
     }, 300);
 }
 
@@ -709,7 +817,10 @@ function confirmMapSelection() {
 }
 
 // 미션 제거 모달 표시
-function showMissionModal(cardElement, index) {
+function showMissionModal(cardElement) {
+    // 모달 닫기 플래그 초기화
+    isModalClosing = false;
+    
     const missionTitle = cardElement.querySelector('h3').textContent;
     const missionImage = cardElement.querySelector('.card-image').src;
     const texts = textData[currentLanguage];
@@ -733,8 +844,8 @@ function showMissionModal(cardElement, index) {
     const closeBtn = document.getElementById('missionModalCloseBtn');
     if (closeBtn) closeBtn.textContent = texts.close;
     
-    // 현재 카드와 인덱스 저장
-    currentModalCard = { element: cardElement, index: index };
+    // 현재 카드 저장
+    currentModalCard = cardElement;
     
     // 모달 표시
     document.getElementById('missionModal').style.display = 'block';
@@ -742,25 +853,38 @@ function showMissionModal(cardElement, index) {
 
 // 미션 제거 모달 닫기
 function closeMissionModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
     const modal = document.getElementById('missionModal');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.remove('closing');
-        // 확인 버튼 다시 표시
+        
+        // 모든 모달 상태 초기화
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
+        const description = document.getElementById('missionModalDescription');
+        const modalImage = document.getElementById('missionModalImage');
+        
+        // 확인 버튼 다시 표시
         confirmBtn.style.display = 'inline-block';
         // 설명 다시 표시
-        const description = document.getElementById('missionModalDescription');
         description.style.display = 'block';
+        // 이미지 스타일 초기화
+        modalImage.style.maxWidth = '';
+        modalImage.style.maxHeight = '';
+        modalImage.style.objectFit = '';
+        
         currentModalCard = null;
+        isModalClosing = false;
     }, 300);
 }
 
 // 미션 제거 확인
 function confirmMissionRemoval() {
     if (currentModalCard) {
-        removeMissionCard(currentModalCard.element, currentModalCard.index);
+        removeMissionCard(currentModalCard);
         closeMissionModal();
     }
 }
@@ -768,6 +892,9 @@ function confirmMissionRemoval() {
 // 전체 게임 초기화 함수
 function resetAllGame() {
     if (confirm(textData[currentLanguage].resetConfirmMessage)) {
+        // 모달 닫기 플래그 초기화
+        isModalClosing = false;
+        
         // 모든 변수 초기화
         currentRound = 1;
         firstPlayerScore = 0;
@@ -826,6 +953,16 @@ function resetAllGame() {
         
         // 미션 카드 리셋 (랜덤 3개)
         generateMissionCards();
+        
+        // 남은 카드 텍스트 다시 표시
+        const remainingCardsLabel = document.getElementById('remainingCardsLabel');
+        if (remainingCardsLabel) {
+            remainingCardsLabel.style.display = 'inline';
+        }
+        const remainingCardsElement = document.getElementById('remainingCards');
+        if (remainingCardsElement) {
+            remainingCardsElement.style.display = 'inline';
+        }
         
         // 점수와 라운드 업데이트
         updateScoreDisplay();
@@ -936,25 +1073,6 @@ function updateScoreOrder() {
         // 짝수 라운드: 왼쪽 후공, 오른쪽 선공
         leftLabel.textContent = texts.second;
         rightLabel.textContent = texts.first;
-    }
-}
-
-// 활성 플레이어 업데이트
-function updateActivePlayer() {
-    const firstLabel = document.getElementById('firstLabel');
-    const secondLabel = document.getElementById('secondLabel');
-    
-    // 기존 활성 플레이어 클래스 제거
-    firstLabel.classList.remove('active-player');
-    secondLabel.classList.remove('active-player');
-    
-    // 라운드에 따라 활성 플레이어 설정
-    if (currentRound % 2 === 1) {
-        // 홀수 라운드 (1, 3, 5): 선공 활성화
-        firstLabel.classList.add('active-player');
-    } else {
-        // 짝수 라운드 (2, 4): 후공 활성화
-        secondLabel.classList.add('active-player');
     }
 }
 
@@ -1069,12 +1187,16 @@ function generateMissionCards() {
         cardElement.className = 'card mission-card';
         cardElement.innerHTML = `
             <img src="data/maintask/${currentLanguage}/${card.image}" alt="${card.name}" class="card-image">
-            <h3>${card.name}</h3>
+            <h3 data-mission-name="${card.name}">${card.name}</h3>
         `;
+        
+        // 이미지 에러 처리 추가
+        const img = cardElement.querySelector('img');
+        handleImageError(img, card.name);
         
         // 커스텀 선택이 아닐 때만 제거 기능 활성화
         if (!isCustomMissionSelected) {
-            cardElement.addEventListener('click', () => showMissionModal(cardElement, index));
+            cardElement.addEventListener('click', () => showMissionModal(cardElement));
         } else {
             // 커스텀 선택 시 클릭 시 확정 기능
             cardElement.addEventListener('click', () => confirmCustomMission(cardElement, card));
@@ -1088,7 +1210,7 @@ function generateMissionCards() {
 }
 
 // 미션 카드 제거 함수
-function removeMissionCard(cardElement, index) {
+function removeMissionCard(cardElement) {
     if (remainingMissionCards > 1) {
         // 카드 제거 표시
         cardElement.classList.add('removed');
@@ -1109,9 +1231,10 @@ function removeMissionCard(cardElement, index) {
             const remainingCard = document.querySelector('.mission-card:not(.removed)');
             if (remainingCard) {
                 remainingCard.classList.add('selected');
-                // 남은 카드의 인덱스를 찾아서 finalMissionCard 설정
-                const remainingIndex = Array.from(document.querySelectorAll('.mission-card')).indexOf(remainingCard);
-                finalMissionCard = missionCards[remainingIndex];
+                
+                // 남은 카드의 이름으로 배열에서 찾기
+                const remainingCardName = remainingCard.querySelector('h3').textContent;
+                finalMissionCard = missionCards.find(card => card.name === remainingCardName);
                 
                 // 클릭 이벤트 제거 (제거 모달이 뜨지 않도록)
                 remainingCard.style.pointerEvents = 'none';
@@ -1128,6 +1251,16 @@ function removeMissionCard(cardElement, index) {
                 `;
                 
                 showNotification(textData[currentLanguage].finalMissionDecided, 'success');
+                
+                // 남은 카드 텍스트 숨기기
+                const remainingCardsLabel = document.getElementById('remainingCardsLabel');
+                if (remainingCardsLabel) {
+                    remainingCardsLabel.style.display = 'none';
+                }
+                const remainingCardsElement = document.getElementById('remainingCards');
+                if (remainingCardsElement) {
+                    remainingCardsElement.style.display = 'none';
+                }
             }
         }
     }
@@ -1168,15 +1301,11 @@ document.addEventListener('keydown', function(event) {
             event.preventDefault();
             decrementRound();
             break;
-        case 'c':
+        case 'm':
             if (event.ctrlKey) {
                 event.preventDefault();
                 showCustomMissionModal();
             }
-            break;
-        case 'Escape':
-            event.preventDefault();
-            resetAllGame();
             break;
     }
 });
@@ -1208,6 +1337,12 @@ function showSecondaryMissionModal(player) {
         return;
     }
     
+    // 모달이 이미 열려있지 않을 때만 플래그 초기화
+    const modal = document.getElementById('secondaryMissionModal');
+    if (modal.style.display !== 'block') {
+        isModalClosing = false;
+    }
+    
     currentSecondaryPlayer = player;
     const texts = textData[currentLanguage];
     const playerName = player === 'first' ? texts.first : texts.second;
@@ -1232,6 +1367,11 @@ function showSecondaryMissionModal(player) {
             <img src="data/subtask/${currentLanguage}/${card.image}" alt="${card.name}">
             <h4>${card.name}</h4>
         `;
+        
+        // 이미지 에러 처리 추가
+        const img = cardElement.querySelector('img');
+        handleImageError(img, card.name);
+        
         cardElement.addEventListener('click', () => toggleSecondaryMissionSelection(cardElement, card, index));
         secondaryMissionGrid.appendChild(cardElement);
     });
@@ -1265,8 +1405,9 @@ function toggleSecondaryMissionSelection(cardElement, card, index) {
         const isSelected = cardElement.classList.contains('selected');
         
         if (isSelected) {
-            // 선택 해제
-            cardElement.classList.remove('selected');
+            // 이미 선택된 카드는 선택 해제하지 않음 (무시)
+            closeMissionModal();
+            return;
         } else {
             // 기존 선택된 카드들 모두 해제
             const selectedCards = document.querySelectorAll('#secondaryMissionGrid .custom-mission-card.selected');
@@ -1291,12 +1432,16 @@ function toggleSecondaryMissionSelection(cardElement, card, index) {
 
 // 세컨더리 미션 선택 모달 닫기
 function closeSecondaryMissionModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
     const modal = document.getElementById('secondaryMissionModal');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.remove('closing');
         currentSecondaryPlayer = null;
+        isModalClosing = false;
     }, 300);
 }
 
@@ -1314,6 +1459,7 @@ function confirmSecondaryMissionSelection() {
     
     // 선택된 카드 정보 저장
     const selectedCardData = {
+        id: cardTitle, // 제목을 ID로 사용
         title: cardTitle,
         image: cardImage.split('/').pop() // 파일명만 추출
     };
@@ -1472,10 +1618,22 @@ function showSelectedSecondSecondaryImage() {
 function changeLanguage(language) {
     currentLanguage = language;
     
-    // 점수와 라운드 초기화
+    // 모달 닫기 플래그 초기화
+    isModalClosing = false;
+    
+    // 모든 게임 상태 초기화
     currentRound = 1;
     firstPlayerScore = 0;
     secondPlayerScore = 0;
+    selectedMapCard = null;
+    finalMissionCard = null;
+    missionCards = [];
+    remainingMissionCards = 3;
+    selectedCustomMissions = [];
+    isCustomMissionSelected = false;
+    selectedFirstSecondaryCard = null;
+    selectedSecondSecondaryCard = null;
+    currentSecondaryPlayer = null;
     
     updateTexts();
     updateMapCards();
@@ -1486,6 +1644,9 @@ function changeLanguage(language) {
     // 라운드 버튼 상태 초기화
     document.getElementById('roundPlusBtn').disabled = false;
     document.getElementById('roundMinusBtn').disabled = true;
+    
+    // 언어 선택 UI 업데이트
+    updateLanguageSelectUI();
     
     showNotification(textData[currentLanguage].languageChanged , 'success');
 }
@@ -1517,6 +1678,11 @@ function updateMapCards() {
             <img src="data/map/${currentLanguage}/${map.image}" alt="${map.name}" class="card-image">
             <h3>${map.name}</h3>
         `;
+        
+        // 이미지 에러 처리 추가
+        const img = cardElement.querySelector('img');
+        handleImageError(img, map.name);
+        
         mapCardsContainer.appendChild(cardElement);
     });
 }
@@ -1578,6 +1744,16 @@ function resetSelectedCards() {
     missionCards = [];
     isCustomMissionSelected = false;
     generateMissionCards();
+    
+    // 남은 카드 텍스트 다시 표시
+    const remainingCardsLabel = document.getElementById('remainingCardsLabel');
+    if (remainingCardsLabel) {
+        remainingCardsLabel.style.display = 'inline';
+    }
+    const remainingCardsElement = document.getElementById('remainingCards');
+    if (remainingCardsElement) {
+        remainingCardsElement.style.display = 'inline';
+    }
 }
 
 // 텍스트 업데이트 함수
@@ -1587,6 +1763,10 @@ function updateTexts() {
     // 맵 카드 선택
     const mapCardSelection = document.querySelector('.map-section h2');
     if (mapCardSelection) mapCardSelection.textContent = texts.mapCardSelection;
+    
+    // 맵 설명
+    const mapDescription = document.querySelector('.map-info p');
+    if (mapDescription) mapDescription.textContent = texts.mapDescription;
     
     // 메인 미션 카드
     const mainMissionCard = document.querySelector('.mission-section h2');
@@ -1607,6 +1787,10 @@ function updateTexts() {
     // 세컨더리 미션 카드
     const secondaryMissionCard = document.querySelector('.secondary-mission-section h2');
     if (secondaryMissionCard) secondaryMissionCard.textContent = texts.secondaryMissionCard;
+    
+    // 세컨더리 미션 설명
+    const secondaryMissionDescription = document.querySelector('.secondary-mission-info p');
+    if (secondaryMissionDescription) secondaryMissionDescription.textContent = texts.secondaryMissionDescription;
     
     // 선공/후공 세컨더리 버튼
     const firstPlayerSecondaryBtn = document.getElementById('firstPlayerSecondaryBtn');
@@ -1653,4 +1837,40 @@ function updateTexts() {
     const resetAllBtn = document.getElementById('resetAllBtn');
     if (resetAllBtn) resetAllBtn.textContent = texts.reset;
     document.getElementById('selected-cards-title').textContent = texts.selectedCards;
+    
+    // 선택된 카드 설명
+    const selectedCardsDescription = document.querySelector('.selected-cards-info p');
+    if (selectedCardsDescription) selectedCardsDescription.textContent = texts.selectedCardsDescription;
+}
+
+// 이미지 로드 실패 처리 함수
+function handleImageError(img, fallbackText) {
+    img.onerror = function() {
+        this.style.display = 'none';
+        const fallback = document.createElement('div');
+        fallback.style.cssText = `
+            width: 100%;
+            height: 100px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #666;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 10px;
+        `;
+        
+        // 현재 언어에 맞는 fallback 텍스트 사용
+        const errorMessages = {
+            'kr': '이미지를 불러올 수 없습니다',
+            'en': 'Failed to load image',
+            'jp': '画像を読み込めません',
+            'cn': '无法加载图像'
+        };
+        
+        fallback.textContent = fallbackText || errorMessages[currentLanguage] || 'Image Error';
+        this.parentNode.insertBefore(fallback, this);
+    };
 } 

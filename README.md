@@ -20,7 +20,6 @@ Support languages : 한국어, English, 日本語, 中文
 -Recommendations
 1. Android version 9.0 or higher required.
 2. When using the web version, a Chromium-based browser is recommended. Please use the latest version of the Chromium-based browser.
-3. If it doesn't work in IOS, try running it in browser desktop mode.
 
 
 -Features

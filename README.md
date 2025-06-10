@@ -3,10 +3,9 @@ EMBER: Obsidian Protocol Third-Party Application - AmadeusEmber
 -----------------------------------------------
 Last Update : 2025-06-10 Version 1.9
 
-<a href="https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber"><img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/></a>
+[![androidresize](https://github.com/user-attachments/assets/8243aad5-6048-4d95-84db-ce2fe1769427)](https://github.com/random0v0/Amadeus_Ember/releases/tag/AmadeusEmber)
 
-
-<a href="https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/"><img src="https://img.shields.io/badge/Google_chrome-4285F4?style=for-the-badge&logo=Google-chrome&logoColor=white"/></a>
+[![Litelogo](https://github.com/user-attachments/assets/1f3b2932-f906-463a-a1af-b9523d8ed683)](https://random0v0.github.io/AmadeusEmber/AmadeusEmber_web/)
 
 
 <a href="https://discord.gg/gJ5P5Ataqt"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"/></a>

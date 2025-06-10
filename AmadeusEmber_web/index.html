@@ -95,13 +95,16 @@
         <!-- 라운드 카운터 -->
         <section class="round-section">
             <h2><span id="roundLabel">라운드:</span> <span id="roundCounter">1</span>/5</h2>
-            <button id="roundPlusBtn" class="round-btn">+</button>
+            <div class="round-buttons">
+                <button id="roundMinusBtn" class="round-btn">-</button>
+                <button id="roundPlusBtn" class="round-btn">+</button>
+            </div>
         </section>
 
         <!-- 점수 섹션 -->
-        <section class="score-section">
+        <section class="score-section" id="scoreSection">
             <div class="score-card">
-                <h3 id="firstLabel">선공</h3>
+                <h3 id="leftPlayerLabel">선공</h3>
                 <div class="score-display">
                     <span id="firstPlayerScore">0</span>
                 </div>
@@ -111,7 +114,7 @@
                 </div>
             </div>
             <div class="score-card">
-                <h3 id="secondLabel">후공</h3>
+                <h3 id="rightPlayerLabel">후공</h3>
                 <div class="score-display">
                     <span id="secondPlayerScore">0</span>
                 </div>

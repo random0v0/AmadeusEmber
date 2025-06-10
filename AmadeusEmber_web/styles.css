@@ -191,8 +191,14 @@ header h1 {
 }
 
 .round-section h2 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #495057;
+}
+
+.round-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .round-btn {
@@ -200,9 +206,9 @@ header h1 {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -243,7 +249,7 @@ header h1 {
 }
 
 .score-display {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #6c757d;
     margin-bottom: 15px;
@@ -283,6 +289,12 @@ header h1 {
 .score-btn:hover {
     background: #5a6268;
     transform: scale(1.1);
+}
+
+.score-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* 카드 그리드 */
@@ -861,6 +873,11 @@ section h2 {
         font-size: 2rem;
     }
     
+    .score-card h3.active-player {
+        font-size: 1.1rem;
+        text-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+    
     .round-section h2 {
         font-size: 1.2rem;
     }
@@ -1030,6 +1047,21 @@ section h2 {
         max-width: 150px;
     }
     
+    .round-buttons {
+        gap: 6px;
+    }
+    
+    .round-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .score-card h3.active-player {
+        font-size: 1rem;
+        text-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+    }
+    
     .custom-mission-grid {
         grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
     }
@@ -1131,23 +1163,4 @@ section h2 {
 
 .card {
     animation: fadeIn 0.5s ease-out;
-}
-
-/* 스크롤바 스타일 */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
 } 

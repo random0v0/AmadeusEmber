@@ -374,8 +374,12 @@ function initializeApp() {
     updateScoreDisplay();
     updateRoundDisplay();
     
+    // 라운드 감소 버튼 초기 비활성화 (라운드 1에서는 감소 불가)
+    document.getElementById('roundMinusBtn').disabled = true;
+    
     // 이벤트 리스너 등록
     document.getElementById('roundPlusBtn').addEventListener('click', incrementRound);
+    document.getElementById('roundMinusBtn').addEventListener('click', decrementRound);
     document.getElementById('customMissionBtn').addEventListener('click', showCustomMissionModal);
     document.getElementById('firstPlayerSecondaryBtn').addEventListener('click', () => showSecondaryMissionModal('first'));
     document.getElementById('secondPlayerSecondaryBtn').addEventListener('click', () => showSecondaryMissionModal('second'));
@@ -766,9 +770,11 @@ function resetAllGame() {
         selectedFirstSecondaryDisplay.innerHTML = '<p id="selectedFirstSecondary">Empty</p>';
         selectedSecondSecondaryDisplay.innerHTML = '<p id="selectedSecondSecondary">Empty</p>';
         
-        // 라운드 버튼 활성화
-        const roundBtn = document.getElementById('roundPlusBtn');
-        roundBtn.disabled = false;
+        // 라운드 버튼 활성화/비활성화 설정
+        const roundPlusBtn = document.getElementById('roundPlusBtn');
+        const roundMinusBtn = document.getElementById('roundMinusBtn');
+        roundPlusBtn.disabled = false;
+        roundMinusBtn.disabled = true; // 라운드 1에서는 감소 버튼 비활성화
         
         // 커스텀 미션 버튼 활성화
         const customMissionBtn = document.getElementById('customMissionBtn');
@@ -852,12 +858,72 @@ function incrementRound() {
         if (currentRound === 5) {
             document.getElementById('roundPlusBtn').disabled = true;
         }
+        
+        // 라운드가 1보다 크면 감소 버튼 활성화
+        if (currentRound > 1) {
+            document.getElementById('roundMinusBtn').disabled = false;
+        }
+    }
+}
+
+// 라운드 감소 함수
+function decrementRound() {
+    if (currentRound > 1) {
+        currentRound--;
+        updateRoundDisplay();
+        
+        // 라운드가 1에 도달하면 감소 버튼 비활성화
+        if (currentRound === 1) {
+            document.getElementById('roundMinusBtn').disabled = true;
+        }
+        
+        // 라운드가 5보다 작으면 증가 버튼 활성화
+        if (currentRound < 5) {
+            document.getElementById('roundPlusBtn').disabled = false;
+        }
     }
 }
 
 // 라운드 표시 업데이트
 function updateRoundDisplay() {
     document.getElementById('roundCounter').textContent = currentRound;
+    updateScoreOrder();
+}
+
+// 점수 카드 순서 변경
+function updateScoreOrder() {
+    const leftLabel = document.getElementById('leftPlayerLabel');
+    const rightLabel = document.getElementById('rightPlayerLabel');
+    const texts = textData[currentLanguage];
+    
+    if (currentRound % 2 === 1) {
+        // 홀수 라운드: 왼쪽 선공, 오른쪽 후공
+        leftLabel.textContent = texts.first;
+        rightLabel.textContent = texts.second;
+    } else {
+        // 짝수 라운드: 왼쪽 후공, 오른쪽 선공
+        leftLabel.textContent = texts.second;
+        rightLabel.textContent = texts.first;
+    }
+}
+
+// 활성 플레이어 업데이트
+function updateActivePlayer() {
+    const firstLabel = document.getElementById('firstLabel');
+    const secondLabel = document.getElementById('secondLabel');
+    
+    // 기존 활성 플레이어 클래스 제거
+    firstLabel.classList.remove('active-player');
+    secondLabel.classList.remove('active-player');
+    
+    // 라운드에 따라 활성 플레이어 설정
+    if (currentRound % 2 === 1) {
+        // 홀수 라운드 (1, 3, 5): 선공 활성화
+        firstLabel.classList.add('active-player');
+    } else {
+        // 짝수 라운드 (2, 4): 후공 활성화
+        secondLabel.classList.add('active-player');
+    }
 }
 
 // 점수 변경 함수
@@ -867,12 +933,28 @@ function changeScore(player, change) {
         if (newScore >= 0) {
             firstPlayerScore = newScore;
             document.getElementById('firstPlayerScore').textContent = firstPlayerScore;
+            
+            // 점수가 0이면 - 버튼 비활성화, 1 이상이면 활성화
+            const firstMinusBtn = document.querySelector('.score-card:first-child .score-btn.minus');
+            if (firstMinusBtn) {
+                firstMinusBtn.disabled = (firstPlayerScore === 0);
+                firstMinusBtn.style.opacity = (firstPlayerScore === 0) ? '0.5' : '1';
+                firstMinusBtn.style.cursor = (firstPlayerScore === 0) ? 'not-allowed' : 'pointer';
+            }
         }
     } else if (player === 'second') {
         const newScore = secondPlayerScore + change;
         if (newScore >= 0) {
             secondPlayerScore = newScore;
             document.getElementById('secondPlayerScore').textContent = secondPlayerScore;
+            
+            // 점수가 0이면 - 버튼 비활성화, 1 이상이면 활성화
+            const secondMinusBtn = document.querySelector('.score-card:last-child .score-btn.minus');
+            if (secondMinusBtn) {
+                secondMinusBtn.disabled = (secondPlayerScore === 0);
+                secondMinusBtn.style.opacity = (secondPlayerScore === 0) ? '0.5' : '1';
+                secondMinusBtn.style.cursor = (secondPlayerScore === 0) ? 'not-allowed' : 'pointer';
+            }
         }
     }
 }
@@ -881,6 +963,22 @@ function changeScore(player, change) {
 function updateScoreDisplay() {
     document.getElementById('firstPlayerScore').textContent = firstPlayerScore;
     document.getElementById('secondPlayerScore').textContent = secondPlayerScore;
+    
+    // - 버튼들의 상태 업데이트
+    const firstMinusBtn = document.querySelector('.score-card:first-child .score-btn.minus');
+    const secondMinusBtn = document.querySelector('.score-card:last-child .score-btn.minus');
+    
+    if (firstMinusBtn) {
+        firstMinusBtn.disabled = (firstPlayerScore === 0);
+        firstMinusBtn.style.opacity = (firstPlayerScore === 0) ? '0.5' : '1';
+        firstMinusBtn.style.cursor = (firstPlayerScore === 0) ? 'not-allowed' : 'pointer';
+    }
+    
+    if (secondMinusBtn) {
+        secondMinusBtn.disabled = (secondPlayerScore === 0);
+        secondMinusBtn.style.opacity = (secondPlayerScore === 0) ? '0.5' : '1';
+        secondMinusBtn.style.cursor = (secondPlayerScore === 0) ? 'not-allowed' : 'pointer';
+    }
 }
 
 // 맵 카드 선택 함수
@@ -1033,6 +1131,10 @@ document.addEventListener('keydown', function(event) {
         case ' ':
             event.preventDefault();
             incrementRound();
+            break;
+        case 'Backspace':
+            event.preventDefault();
+            decrementRound();
             break;
         case 'c':
             if (event.ctrlKey) {
@@ -1332,9 +1434,22 @@ function showSelectedSecondSecondaryImage() {
 // 언어 변경 함수
 function changeLanguage(language) {
     currentLanguage = language;
+    
+    // 점수와 라운드 초기화
+    currentRound = 1;
+    firstPlayerScore = 0;
+    secondPlayerScore = 0;
+    
     updateTexts();
     updateMapCards();
     resetSelectedCards();
+    updateScoreDisplay();
+    updateRoundDisplay();
+    
+    // 라운드 버튼 상태 초기화
+    document.getElementById('roundPlusBtn').disabled = false;
+    document.getElementById('roundMinusBtn').disabled = true;
+    
     showNotification(textData[currentLanguage].languageChanged , 'success');
 }
 
@@ -1480,6 +1595,12 @@ function updateTexts() {
     if (firstLabel) firstLabel.textContent = texts.first;
     if (secondLabel) secondLabel.textContent = texts.second;
     if (resetBtn) resetBtn.textContent = texts.reset;
+    
+    // 점수칸 언어 업데이트
+    const leftPlayerLabel = document.getElementById('leftPlayerLabel');
+    const rightPlayerLabel = document.getElementById('rightPlayerLabel');
+    if (leftPlayerLabel) leftPlayerLabel.textContent = texts.first;
+    if (rightPlayerLabel) rightPlayerLabel.textContent = texts.second;
     
     // 모달 닫기 버튼들 업데이트
     const mapModalCloseBtn = document.getElementById('mapModalCloseBtn');

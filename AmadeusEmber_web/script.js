@@ -434,10 +434,23 @@ function initializeApp() {
     // ESC 키로 모달 닫기
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
-            closeMapModal();
-            closeMissionModal();
-            closeCustomMissionModal();
-            closeSecondaryMissionModal();
+            const mapModal = document.getElementById('mapModal');
+            const missionModal = document.getElementById('missionModal');
+            const customMissionModal = document.getElementById('customMissionModal');
+            const secondaryMissionModal = document.getElementById('secondaryMissionModal');
+            
+            if (mapModal.style.display === 'block') {
+                closeMapModal();
+            }
+            if (missionModal.style.display === 'block') {
+                closeMissionModal();
+            }
+            if (customMissionModal.style.display === 'block') {
+                closeCustomMissionModal();
+            }
+            if (secondaryMissionModal.style.display === 'block') {
+                closeSecondaryMissionModal();
+            }
         }
     });
     
@@ -546,8 +559,13 @@ function toggleCustomMissionSelection(cardElement, card, index) {
 
 // 커스텀 미션 선택 모달 닫기
 function closeCustomMissionModal() {
-    document.getElementById('customMissionModal').style.display = 'none';
-    selectedCustomMissions = [];
+    const modal = document.getElementById('customMissionModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        selectedCustomMissions = [];
+    }, 300);
 }
 
 // 커스텀 미션 선택 확인
@@ -672,8 +690,13 @@ function showMapModal(cardElement) {
 
 // 맵 선택 모달 닫기
 function closeMapModal() {
-    document.getElementById('mapModal').style.display = 'none';
-    currentModalCard = null;
+    const modal = document.getElementById('mapModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        currentModalCard = null;
+    }, 300);
 }
 
 // 맵 선택 확인
@@ -719,14 +742,19 @@ function showMissionModal(cardElement, index) {
 
 // 미션 제거 모달 닫기
 function closeMissionModal() {
-    document.getElementById('missionModal').style.display = 'none';
-    // 확인 버튼 다시 표시
-    const confirmBtn = document.getElementById('missionModalConfirmBtn');
-    confirmBtn.style.display = 'inline-block';
-    // 설명 다시 표시
-    const description = document.getElementById('missionModalDescription');
-    description.style.display = 'block';
-    currentModalCard = null;
+    const modal = document.getElementById('missionModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        // 확인 버튼 다시 표시
+        const confirmBtn = document.getElementById('missionModalConfirmBtn');
+        confirmBtn.style.display = 'inline-block';
+        // 설명 다시 표시
+        const description = document.getElementById('missionModalDescription');
+        description.style.display = 'block';
+        currentModalCard = null;
+    }, 300);
 }
 
 // 미션 제거 확인
@@ -1263,8 +1291,13 @@ function toggleSecondaryMissionSelection(cardElement, card, index) {
 
 // 세컨더리 미션 선택 모달 닫기
 function closeSecondaryMissionModal() {
-    document.getElementById('secondaryMissionModal').style.display = 'none';
-    currentSecondaryPlayer = null;
+    const modal = document.getElementById('secondaryMissionModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        currentSecondaryPlayer = null;
+    }, 300);
 }
 
 // 세컨더리 미션 선택 확인

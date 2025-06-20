@@ -214,6 +214,23 @@
         </div>
     </div>
 
+    <!-- 모바일 가로 모드 추천 모달 -->
+    <div id="mobileOrientationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="mobileOrientationModalTitle">모바일 환경 안내</h2>
+                <span class="close" onclick="closeMobileOrientationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="orientation-icon">📱</div>
+                <p id="mobileOrientationModalDescription">더 나은 이용을 위해 가로 모드를 권장드립니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" onclick="closeMobileOrientationModal()" id="mobileOrientationModalConfirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">

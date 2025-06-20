@@ -68,7 +68,10 @@ const textData = {
         selectSecondaryMission: '세컨더리 미션 카드를 선택해주세요.',
         firstSecondarySelected: '선공 세컨더리 미션이 선택되었습니다!',
         secondSecondarySelected: '후공 세컨더리 미션이 선택되었습니다!',
-        languageChanged: '언어가 변경되었습니다.'
+        languageChanged: '언어가 변경되었습니다.',
+        mobileOrientationTitle: '모바일 환경 안내',
+        mobileOrientationDescription: '더 나은 이용을 위해 가로 모드를 권장드립니다.',
+        confirm: '확인'
     },
     en: {
         mapCardSelection: 'Select a map',
@@ -119,7 +122,10 @@ const textData = {
         selectSecondaryMission: 'Please select a secondary task.',
         firstSecondarySelected: 'First player secondary task has been selected!',
         secondSecondarySelected: 'Second player secondary task has been selected!',
-        languageChanged: 'Language has been changed'
+        languageChanged: 'Language has been changed',
+        mobileOrientationTitle: 'Mobile Environment Notice',
+        mobileOrientationDescription: 'For a better experience, we recommend using landscape mode.',
+        confirm: 'Confirm'
     },
     jp: {
         mapCardSelection: 'マップカードの選択',
@@ -170,7 +176,10 @@ const textData = {
         selectSecondaryMission: 'セカンダリータスクを選択してください。',
         firstSecondarySelected: '先手のセカンダリータスクが選択されました！',
         secondSecondarySelected: '後手のセカンダリータスクが選択されました！',
-        languageChanged: '言語が変更されました。'
+        languageChanged: '言語が変更されました。',
+        mobileOrientationTitle: 'モバイル環境のお知らせ',
+        mobileOrientationDescription: 'より快適にご利用いただくため、横向きモードを推奨します。',
+        confirm: '確認'
     },
     cn: {
         mapCardSelection: '请选择一张地图',
@@ -221,7 +230,10 @@ const textData = {
         selectSecondaryMission: '请选择次要任务卡。',
         firstSecondarySelected: '先手的次要任务已选择！',
         secondSecondarySelected: '后手的次要任务已选择！',
-        languageChanged: '语言已更改。'
+        languageChanged: '语言已更改。',
+        mobileOrientationTitle: '移动设备环境提示',
+        mobileOrientationDescription: '为了获得更好的使用体验，建议使用横屏模式。',
+        confirm: '确定'
     }
 };
 
@@ -386,6 +398,8 @@ function initializeApp() {
         splashScreen.classList.add('fade-out');
         setTimeout(() => {
             splashScreen.style.display = 'none';
+            // 모바일 환경에서 가로 모드 추천 모달 표시
+            showMobileOrientationModal();
         }, 500);
     }, 3000);
     
@@ -411,6 +425,7 @@ function initializeApp() {
         const missionModal = document.getElementById('missionModal');
         const customMissionModal = document.getElementById('customMissionModal');
         const secondaryMissionModal = document.getElementById('secondaryMissionModal');
+        const mobileOrientationModal = document.getElementById('mobileOrientationModal');
         
         if (event.target === mapModal) {
             closeMapModal();
@@ -423,6 +438,9 @@ function initializeApp() {
         }
         if (event.target === secondaryMissionModal) {
             closeSecondaryMissionModal();
+        }
+        if (event.target === mobileOrientationModal) {
+            closeMobileOrientationModal();
         }
     });
     
@@ -432,6 +450,7 @@ function initializeApp() {
         const missionModal = document.getElementById('missionModal');
         const customMissionModal = document.getElementById('customMissionModal');
         const secondaryMissionModal = document.getElementById('secondaryMissionModal');
+        const mobileOrientationModal = document.getElementById('mobileOrientationModal');
         
         if (event.target === mapModal) {
             closeMapModal();
@@ -444,6 +463,9 @@ function initializeApp() {
         }
         if (event.target === secondaryMissionModal) {
             closeSecondaryMissionModal();
+        }
+        if (event.target === mobileOrientationModal) {
+            closeMobileOrientationModal();
         }
     });
     
@@ -454,6 +476,7 @@ function initializeApp() {
             const missionModal = document.getElementById('missionModal');
             const customMissionModal = document.getElementById('customMissionModal');
             const secondaryMissionModal = document.getElementById('secondaryMissionModal');
+            const mobileOrientationModal = document.getElementById('mobileOrientationModal');
             
             if (mapModal.style.display === 'block') {
                 closeMapModal();
@@ -467,11 +490,14 @@ function initializeApp() {
             if (secondaryMissionModal.style.display === 'block') {
                 closeSecondaryMissionModal();
             }
+            if (mobileOrientationModal.style.display === 'block') {
+                closeMobileOrientationModal();
+            }
         }
     });
     
     // 모달 내부 스크롤 방지 (모바일에서 확대 시)
-    const modals = ['mapModal', 'missionModal', 'customMissionModal', 'secondaryMissionModal'];
+    const modals = ['mapModal', 'missionModal', 'customMissionModal', 'secondaryMissionModal', 'mobileOrientationModal'];
     modals.forEach(modalId => {
         const modal = document.getElementById(modalId);
         if (modal) {
@@ -1328,6 +1354,74 @@ window.confirmCustomMissionSelection = confirmCustomMissionSelection;
 window.confirmCustomMission = confirmCustomMission;
 window.changeScore = changeScore;
 window.resetGame = resetGame;
+window.closeMobileOrientationModal = closeMobileOrientationModal;
+
+// 모달이 열려있는지 확인하는 헬퍼 함수
+function isAnyModalOpen() {
+    const modals = ['mapModal', 'missionModal', 'customMissionModal', 'secondaryMissionModal', 'mobileOrientationModal'];
+    return modals.some(modalId => {
+        const modal = document.getElementById(modalId);
+        return modal && modal.style.display === 'block';
+    });
+}
+
+// 모바일 기기 감지 함수
+function isMobileDevice() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+    // Android 기기 감지
+    if (/android/i.test(userAgent)) {
+        return true;
+    }
+    
+    // iOS 기기 감지 (iPhone, iPad, iPod)
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return true;
+    }
+    
+    return false;
+}
+
+// 모바일 가로 모드 추천 모달 표시
+function showMobileOrientationModal() {
+    // 모바일 기기(Android, iOS)에서만 표시
+    if (!isMobileDevice()) {
+        return;
+    }
+    
+    // 다른 모달이 열려있는지 확인
+    if (isAnyModalOpen()) {
+        // 다른 모달이 열려있으면 잠시 후 다시 시도
+        setTimeout(() => showMobileOrientationModal(), 500);
+        return;
+    }
+    
+    // 모달 닫기 플래그 초기화
+    isModalClosing = false;
+    
+    const texts = textData[currentLanguage];
+    
+    // 모달 텍스트 설정
+    document.getElementById('mobileOrientationModalTitle').textContent = texts.mobileOrientationTitle;
+    document.getElementById('mobileOrientationModalDescription').textContent = texts.mobileOrientationDescription;
+    document.getElementById('mobileOrientationModalConfirmBtn').textContent = texts.confirm;
+    
+    document.getElementById('mobileOrientationModal').style.display = 'block';
+}
+
+// 모바일 가로 모드 추천 모달 닫기
+function closeMobileOrientationModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
+    const modal = document.getElementById('mobileOrientationModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        isModalClosing = false;
+    }, 300);
+}
 
 // 세컨더리 미션 선택 모달 표시
 function showSecondaryMissionModal(player) {

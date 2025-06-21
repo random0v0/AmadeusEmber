@@ -380,9 +380,12 @@ let allSecondaryMissionCards = [
     { id: 4, title: '서브미션5', image: 'submission5.png' }
 ];
 
-// 페이지 로드 시 초기화
+// 페이지 로드 시 스플래시 스크린 처리 후 앱 초기화
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+    // 스플래시 스크린이 완전히 로드될 때까지 잠시 대기
+    setTimeout(() => {
+        initializeApp();
+    }, 100);
 });
 
 // 앱 초기화
@@ -392,12 +395,15 @@ function initializeApp() {
     
     // 스플래시 스크린 처리
     const splashScreen = document.getElementById('splashScreen');
+    const container = document.querySelector('.container');
     
     // 3초 후 스플래시 스크린 사라지기
     setTimeout(() => {
         splashScreen.classList.add('fade-out');
         setTimeout(() => {
             splashScreen.style.display = 'none';
+            // 메인 컨테이너 표시
+            container.classList.add('show');
             // 모바일 환경에서 가로 모드 추천 모달 표시
             showMobileOrientationModal();
         }, 500);

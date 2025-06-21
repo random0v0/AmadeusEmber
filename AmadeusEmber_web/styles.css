@@ -18,6 +18,8 @@
     align-items: center;
     z-index: 9999;
     animation: fadeIn 0.5s ease-out;
+    opacity: 1;
+    visibility: visible;
 }
 
 .splash-screen.fade-out {
@@ -102,6 +104,14 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.container.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 header {

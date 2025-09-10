@@ -711,11 +711,11 @@ function showCustomMissionModal() {
         customMissionGrid.appendChild(cardElement);
     });
     
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+    preventBodyScroll();
+    
     // 모달 표시
     document.getElementById('customMissionModal').style.display = 'block';
-    
-    // body 스크롤 방지
-    preventBodyScroll();
 }
 
 // 커스텀 미션 선택 토글
@@ -918,11 +918,11 @@ function showMapModal(cardElement) {
     // 현재 카드 저장
     currentModalCard = cardElement;
     
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+    preventBodyScroll();
+    
     // 모달 표시
     document.getElementById('mapModal').style.display = 'block';
-    
-    // body 스크롤 방지
-    preventBodyScroll();
 }
 
 // 맵 선택 모달 닫기
@@ -983,11 +983,11 @@ function showMissionModal(cardElement) {
     // 현재 카드 저장
     currentModalCard = cardElement;
     
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+    preventBodyScroll();
+    
     // 모달 표시
     document.getElementById('missionModal').style.display = 'block';
-    
-    // body 스크롤 방지
-    preventBodyScroll();
 }
 
 // 미션 제거 모달 닫기
@@ -1743,10 +1743,10 @@ function showMobileOrientationModal() {
     document.getElementById('mobileOrientationModalDescription').textContent = texts.mobileOrientationDescription;
     document.getElementById('mobileOrientationModalConfirmBtn').textContent = texts.confirm;
     
-    document.getElementById('mobileOrientationModal').style.display = 'block';
-    
-    // body 스크롤 방지
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
     preventBodyScroll();
+    
+    document.getElementById('mobileOrientationModal').style.display = 'block';
 }
 
 // 모바일 가로 모드 추천 모달 닫기
@@ -1813,11 +1813,11 @@ function showSecondaryMissionModal(player) {
         secondaryMissionGrid.appendChild(cardElement);
     });
     
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+    preventBodyScroll();
+    
     // 모달 표시
     document.getElementById('secondaryMissionModal').style.display = 'block';
-    
-    // body 스크롤 방지
-    preventBodyScroll();
 }
 
 // 세컨더리 미션 선택 토글
@@ -1998,6 +1998,9 @@ function showSelectedMapImage() {
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
         
+        // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+        preventBodyScroll();
+        
         // 모달 표시
         document.getElementById('missionModal').style.display = 'block';
     }
@@ -2049,6 +2052,9 @@ function showSelectedMissionImage() {
         // 확인 버튼 숨기기, 닫기 버튼만 표시
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
+        
+        // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+        preventBodyScroll();
         
         // 모달 표시
         document.getElementById('missionModal').style.display = 'block';
@@ -2102,6 +2108,9 @@ function showSelectedFirstSecondaryImage() {
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
         
+        // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+        preventBodyScroll();
+        
         // 모달 표시
         document.getElementById('missionModal').style.display = 'block';
     }
@@ -2153,6 +2162,9 @@ function showSelectedSecondSecondaryImage() {
         // 확인 버튼 숨기기, 닫기 버튼만 표시
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
+        
+        // body 스크롤 방지 (모달 표시 전에 먼저 실행)
+        preventBodyScroll();
         
         // 모달 표시
         document.getElementById('missionModal').style.display = 'block';
@@ -2773,10 +2785,10 @@ function showRecordsModal(recordsText) {
         </div>
     `;
     
-    document.body.appendChild(modal);
-    
-    // body 스크롤 방지
+    // body 스크롤 방지 (모달 표시 전에 먼저 실행)
     preventBodyScroll();
+    
+    document.body.appendChild(modal);
     
     // 모달 닫기 이벤트 리스너 추가
     const closeElements = modal.querySelectorAll('.close, .modal-btn');
@@ -2823,23 +2835,29 @@ function handleImageError(img, fallbackText) {
 
 // 모달 스크롤 제어 함수들
 function preventBodyScroll() {
-    // 현재 스크롤 위치 저장
-    scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    // 현재 스크롤 위치 저장 (더 정확한 방법 사용)
+    scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     
     // body에 modal-open 클래스 추가하여 스크롤 방지
     document.body.classList.add('modal-open');
     
-    // position: fixed를 사용하지 않으므로 top 스타일 제거
-    // document.body.style.top = `-${scrollPosition}px`;
+    // 현재 스크롤 위치로 고정 (position: fixed 사용)
+    document.body.style.top = `-${scrollPosition}px`;
 }
 
 function restoreBodyScroll() {
     // modal-open 클래스 제거
     document.body.classList.remove('modal-open');
     
-    // body 스타일 초기화 (top 스타일이 없으므로 제거)
-    // document.body.style.top = '';
+    // body 스타일 초기화
+    document.body.style.top = '';
     
-    // 원래 스크롤 위치로 복원
-    window.scrollTo(0, scrollPosition);
+    // 원래 스크롤 위치로 복원 (더 안전한 방법)
+    setTimeout(() => {
+        window.scrollTo({
+            top: scrollPosition,
+            left: 0,
+            behavior: 'instant'
+        });
+    }, 10); // 약간의 지연을 두어 DOM 업데이트 완료 후 실행
 } 

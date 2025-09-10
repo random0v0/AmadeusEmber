@@ -114,6 +114,25 @@ body {
     visibility: visible;
 }
 
+/* 초기 로딩 후 숨겨질 섹션들 */
+.mission-section,
+.secondary-mission-section,
+.selected-section,
+.round-section,
+.score-section {
+    display: none;
+}
+
+/* 기록 섹션은 항상 표시 */
+.record-section {
+    display: block;
+}
+
+/* 맵 섹션만 초기에 표시 */
+.map-section {
+    display: block;
+}
+
 header {
     text-align: center;
     margin-bottom: 30px;
@@ -159,9 +178,9 @@ header h1 {
     }
 }
 
-/* 초기화 버튼 스타일 */
-.reset-all-btn {
-    background: #6c757d;
+/* 다음 버튼 스타일 */
+.next-btn {
+    background: #28a745;
     color: white;
     border: none;
     border-radius: 25px;
@@ -170,12 +189,46 @@ header h1 {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
     width: 100%;
     margin-top: 20px;
-    position: static;
-    margin: 10px auto 0 auto;
     display: block;
+}
+
+.next-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.next-btn:active {
+    transform: translateY(0);
+}
+
+.next-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* 초기화 버튼 스타일 */
+.reset-all-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+    margin-top: 10px;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .reset-all-btn:hover {
@@ -241,32 +294,119 @@ header h1 {
 
 /* 점수 섹션 */
 .score-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: none;
+    flex-direction: row;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    align-items: center;
+    position: relative;
+}
+
+.score-section.show {
+    display: flex !important;
 }
 
 .score-card {
     background: #f8f9fa;
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    flex: 1;
 }
 
+/* 전환 버튼 컨테이너 */
+.score-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+/* 전환 버튼 */
+.score-switch-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    z-index: 11;
+}
+
+.score-switch-btn:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+.score-switch-btn:active {
+    transform: scale(0.95);
+}
+
+.score-switch-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+.score-switch-btn:disabled:hover {
+    background: #adb5bd;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 선공 텍스트 그라데이션 효과 */
 .score-card h3 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: #495057;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.score-card h3.first-player {
+    background: linear-gradient(45deg, #ff4757, #ff3838, #ff2f2f, #ff1e1e, #ff0000);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.score-card h3.first-player.animate {
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .score-display {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: #6c757d;
-    margin-bottom: 15px;
-    min-height: 60px;
+    margin-bottom: 10px;
+    min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -308,6 +448,96 @@ header h1 {
     background: #adb5bd;
     cursor: not-allowed;
     transform: none;
+}
+
+/* 헤더 버튼들 */
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.header-buttons .record-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    max-width: 100px;
+}
+
+.header-buttons .reset-all-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* 기록 관리 섹션 */
+.record-section {
+    margin-bottom: 20px;
+}
+
+.record-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.record-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    flex: 1;
+    max-width: 150px;
+}
+
+.record-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.record-btn:active {
+    transform: translateY(0);
+}
+
+.record-btn:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+.record-btn:disabled:hover {
+    background: #adb5bd;
+    transform: none;
+    box-shadow: none;
+}
+
+.save-btn {
+    background: #28a745;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.save-btn:hover {
+    background: #218838;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.view-btn {
+    background: #6f42c1;
+    box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+}
+
+.view-btn:hover {
+    background: #5a32a3;
+    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
 }
 
 /* 카드 그리드 */
@@ -872,15 +1102,31 @@ section h2 {
     }
     
     .reset-all-btn {
-        position: static;
-        margin: 10px auto 0 auto;
-        width: 100%;
-        max-width: 200px;
-        display: block;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        margin-top: 8px;
     }
     
-    .score-section {
-        grid-template-columns: 1fr;
+    .record-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .record-btn {
+        max-width: none;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    /* 모바일에서 전환 버튼 크기 조정 */
+    .score-switch-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .score-switch-btn svg {
+        width: 20px;
+        height: 20px;
     }
     
     /* 카드 그리드 모바일 최적화 */
@@ -945,6 +1191,16 @@ section h2 {
     }
     
     .round-section h2 {
+        font-size: 1.1rem;
+    }
+    
+    .round-buttons {
+        gap: 6px;
+    }
+    
+    .round-btn {
+        width: 40px;
+        height: 40px;
         font-size: 1.2rem;
     }
     
@@ -966,12 +1222,14 @@ section h2 {
         position: relative;
         top: 50%;
         transform: translateY(-50%);
+        animation: modalSlideInMobile 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     
     .custom-modal-content {
         max-height: 95vh;
         width: 98%;
         margin: 1vh auto;
+        animation: modalSlideInMobile 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     
     .modal-header {
@@ -1239,6 +1497,28 @@ section h2 {
     }
 }
 
+@keyframes modalSlideInMobile {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+}
+
+@keyframes modalSlideOutMobile {
+    from {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9);
+    }
+}
+
 .card {
     animation: fadeIn 0.5s ease-out;
 }
@@ -1250,6 +1530,13 @@ section h2 {
 .modal.closing .modal-content,
 .modal.closing .custom-modal-content {
     animation: modalSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@media (max-width: 480px) {
+    .modal.closing .modal-content,
+    .modal.closing .custom-modal-content {
+        animation: modalSlideOutMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
 }
 
 .discord-link {

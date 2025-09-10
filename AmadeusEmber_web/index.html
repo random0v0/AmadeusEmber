@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmadeusEmber Lite</title>
+    <title>AmadeusEmber</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- 스플래시 스크린 -->
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
-            <h2 class="splash-title">AmadeusEmber Lite</h2>
+            <h2 class="splash-title">AmadeusEmber</h2>
             <p class="splash-subtitle">Created by Khalid</p>
             <div class="loading-spinner"></div>
         </div>
@@ -18,7 +18,7 @@
 
     <div class="container">
         <header>
-            <h1>AmadeusEmber Lite</h1>
+            <h1>AmadeusEmber</h1>
             <p class="creator-credit">Created by Khalid</p>
             <p class="discord-link"><a href="https://discord.gg/gJ5P5Ataqt" target="_blank">Discord</a></p>
             <div class="language-selector">
@@ -30,6 +30,7 @@
                     <option value="cn">中文</option>
                 </select>
             </div>
+            <button id="resetAllBtn" class="reset-all-btn">초기화</button>
         </header>
 
         <!-- 맵 카드 선택 -->
@@ -41,6 +42,7 @@
             <div class="card-grid" id="mapCards">
                 <!-- 맵 카드들이 동적으로 생성됩니다 -->
             </div>
+            <button id="nextToMissionBtn" class="next-btn" style="display: none;">다음 단계</button>
         </section>
 
         <!-- 메인 미션 카드 선택 -->
@@ -54,6 +56,7 @@
                 <!-- 미션 카드들이 동적으로 생성됩니다 -->
             </div>
             <button id="customMissionBtn" class="custom-btn">커스텀 미션 선택</button>
+            <button id="nextToSecondaryBtn" class="next-btn" style="display: none;">다음 단계</button>
         </section>
 
         <!-- 세컨더리 미션 카드 선택 -->
@@ -123,6 +126,19 @@
                     <button class="score-btn plus" onclick="changeScore('first', 1)">+</button>
                 </div>
             </div>
+            
+            <!-- 전환 버튼 -->
+            <div class="score-switch-container">
+                <button id="scoreSwitchBtn" class="score-switch-btn" onclick="switchPlayerPositions()" title="선공/후공 위치 변경">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 7L3 12L8 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            
             <div class="score-card">
                 <h3 id="rightPlayerLabel">후공</h3>
                 <div class="score-display">
@@ -135,7 +151,13 @@
             </div>
         </section>
 
-        <button id="resetAllBtn" class="reset-all-btn">초기화</button>
+        <!-- 기록 관리 섹션 -->
+        <section class="record-section">
+            <div class="record-buttons">
+                <button id="saveRecordBtn" class="record-btn save-btn">기록저장</button>
+                <button id="viewRecordBtn" class="record-btn view-btn">기록보기</button>
+            </div>
+        </section>
     </div>
 
     <!-- 맵 선택 모달 -->

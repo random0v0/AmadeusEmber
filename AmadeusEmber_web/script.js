@@ -2,6 +2,7 @@
 let currentRound = 1;
 let firstPlayerScore = 0;
 let secondPlayerScore = 0;
+let isPositionSwitched = false; // 선공/후공 위치 전환 상태
 let selectedMapCard = null;
 let finalMissionCard = null;
 let missionCards = [];
@@ -16,6 +17,9 @@ let isModalClosing = false; // 모달 닫기 중복 실행 방지
 
 // 현재 언어 설정
 let currentLanguage = 'kr';
+
+// 언어 변경으로 인한 새로고침인지 확인하는 플래그
+let isLanguageChangeReload = false;
 
 // 언어별 텍스트 데이터
 const textData = {
@@ -38,8 +42,8 @@ const textData = {
         removeMissionConfirm: '미션 카드를 제거하시겠습니까?',
         secondaryMissionCard: '세컨더리 미션 카드',
         secondaryMissionDescription: '각각 한 장씩 선택 가능합니다.',
-        firstPlayerSecondary: '선공 세컨더리 미션 선택',
-        secondPlayerSecondary: '후공 세컨더리 미션 선택',
+        firstPlayerSecondary: '선공 세컨더리 미션 카드',
+        secondPlayerSecondary: '후공 세컨더리 미션 카드',
         firstPlayerDescription: '선공의 세컨더리 미션 카드를 선택하세요. 한 장만 선택 가능합니다.',
         selectSecondaryConfirm: '세컨더리 미션을 선택하시겠습니까?',
         secondPlayerDescription: '후공의 세컨더리 미션 카드를 선택하세요. 한 장만 선택 가능합니다.',
@@ -47,9 +51,20 @@ const textData = {
         finalMission: '메인미션 :',
         firstSecondary: '선공 세컨더리 :',
         secondSecondary: '후공 세컨더리 :',
-        round: '라운드 :',
-        first: '선공',
-        second: '후공',
+        round: '라운드',
+        first: '선공 점수',
+        second: '후공 점수',
+        firstLabel: '선공',
+        secondLabel: '후공',
+        map: '맵',
+        mission: '미션',
+        saveRecord: '기록저장',
+        viewRecord: '기록보기',
+        gameRecords: '게임 기록',
+        close: '닫기',
+        imageLoadFailed: '이미지를 불러올 수 없습니다',
+        positionSwitched: '선공/후공 위치가 변경되었습니다',
+        saveOnlyAtRound5: '5라운드에서만 기록을 저장할 수 있습니다',
         reset: '초기화',
         selectedCards: '선택된 카드',
         selectedCardsDescription: '이미지 클릭 시 확대됩니다.',
@@ -71,7 +86,8 @@ const textData = {
         languageChanged: '언어가 변경되었습니다.',
         mobileOrientationTitle: '모바일 환경 안내',
         mobileOrientationDescription: '더 나은 이용을 위해 가로 모드를 권장드립니다.',
-        confirm: '확인'
+        confirm: '확인',
+        nextStep: '다음 단계'
     },
     en: {
         mapCardSelection: 'Select a map',
@@ -92,18 +108,29 @@ const textData = {
         removeMissionConfirm: 'Do you want to remove this mission card?',
         secondaryMissionCard: 'Secondary task',
         secondaryMissionDescription: 'Each can be selected one by one.',
-        firstPlayerSecondary: 'First Player',
-        secondPlayerSecondary: 'Second Player',
+        firstPlayerSecondary: 'First Player Secondary Task',
+        secondPlayerSecondary: 'Second Player Secondary Task',
         firstPlayerDescription: 'Please select the secondary task of the first ship. You can only select one.',
         selectSecondaryConfirm: 'Do you want to select a secondary task?',
         secondPlayerDescription: 'Please select the secondary task of the second ship. You can only select one.',
         selectedMap: 'Map :',
         finalMission: 'Main task :',
-        firstSecondary: 'First :',
-        secondSecondary: 'Second :',
-        round: 'Round :',
-        first: 'First',
-        second: 'Second',
+        firstSecondary: 'First Player Secondary :',
+        secondSecondary: 'Second Player Secondary :',
+        round: 'Round',
+        first: 'First Score',
+        second: 'Second Score',
+        firstLabel: 'First',
+        secondLabel: 'Second',
+        map: 'Map',
+        mission: 'Main task',
+        saveRecord: 'Save Record',
+        viewRecord: 'View Records',
+        gameRecords: 'Game Records',
+        close: 'Close',
+        imageLoadFailed: 'Failed to load image',
+        positionSwitched: 'Player positions have been switched',
+        saveOnlyAtRound5: 'Records can only be saved at round 5',
         reset: 'Reset',
         selectedCards: 'Selected Cards',
         selectedCardsDescription: 'Click image to enlarge',
@@ -125,7 +152,8 @@ const textData = {
         languageChanged: 'Language has been changed',
         mobileOrientationTitle: 'Mobile Environment Notice',
         mobileOrientationDescription: 'For a better experience, we recommend using landscape mode.',
-        confirm: 'Confirm'
+        confirm: 'Confirm',
+        nextStep: 'Next Step'
     },
     jp: {
         mapCardSelection: 'マップカードの選択',
@@ -146,18 +174,29 @@ const textData = {
         removeMissionConfirm: 'このメインタスクを削除しますか？',
         secondaryMissionCard: 'セカンダリータスク',
         secondaryMissionDescription: 'それぞれ1枚ずつ選択可能です。',
-        firstPlayerSecondary: '先手',
-        secondPlayerSecondary: '後手',
+        firstPlayerSecondary: '先手セカンダリータスク',
+        secondPlayerSecondary: '後手セカンダリータスク',
         firstPlayerDescription: '先手のセカンダリタスクを選択します。1つだけ選択可能です。',
         selectSecondaryConfirm: 'セカンダリタスクを選択しますか？',
         secondPlayerDescription: '後手のセカンダリタスクを選択します。1つだけ選択可能です。',
         selectedMap: 'マップ :',
         finalMission: 'メインタスク :',
-        firstSecondary: '先手 :',
-        secondSecondary: '後手 :',
-        round: 'ターン :',
-        first: '先手',
-        second: '後手',
+        firstSecondary: '先手セカンダリータスク :',
+        secondSecondary: '後手セカンダリータスク :',
+        round: 'ターン',
+        first: '先手スコア',
+        second: '後手スコア',
+        firstLabel: '先手',
+        secondLabel: '後手',
+        map: 'マップ',
+        mission: 'メインタスク',
+        saveRecord: '記録保存',
+        viewRecord: '記録表示',
+        gameRecords: 'ゲーム記録',
+        close: '閉じる',
+        imageLoadFailed: '画像を読み込めません',
+        positionSwitched: '先手/後手の位置が変更されました',
+        saveOnlyAtRound5: '5ラウンドでのみ記録を保存できます',
         reset: 'リセット',
         selectedCards: '選択されたカード',
         selectedCardsDescription: 'クリックして拡大表示',
@@ -179,7 +218,8 @@ const textData = {
         languageChanged: '言語が変更されました。',
         mobileOrientationTitle: 'モバイル環境のお知らせ',
         mobileOrientationDescription: 'より快適にご利用いただくため、横向きモードを推奨します。',
-        confirm: '確認'
+        confirm: '確認',
+        nextStep: '次のステップ'
     },
     cn: {
         mapCardSelection: '请选择一张地图',
@@ -200,18 +240,29 @@ const textData = {
         removeMissionConfirm: '确定要删除这个任务卡吗？',
         secondaryMissionCard: '次要任务卡',
         secondaryMissionDescription: '每个可以单独选择。',
-        firstPlayerSecondary: '先手',
-        secondPlayerSecondary: '后手',
+        firstPlayerSecondary: '先手次要任务卡',
+        secondPlayerSecondary: '后手次要任务卡',
         firstPlayerDescription: '请选择先手的次要任务卡。 只能选择一个。',
         selectSecondaryConfirm: '确定要选择次要任务卡吗？',
         secondPlayerDescription: '请选择后手的次要任务卡。 只能选择一个。',
         selectedMap: '地图 :',
         finalMission: '主要任务卡 :',
-        firstSecondary: '先手 :',
-        secondSecondary: '后手 :',
-        round: '回合 :',
-        first: '先手',
-        second: '后手',
+        firstSecondary: '先手次要任务卡 :',
+        secondSecondary: '后手次要任务卡 :',
+        round: '回合',
+        first: '先手分数',
+        second: '后手分数',
+        firstLabel: '先手',
+        secondLabel: '后手',
+        map: '地图',
+        mission: '任务',
+        saveRecord: '保存记录',
+        viewRecord: '查看记录',
+        gameRecords: '游戏记录',
+        close: '关闭',
+        imageLoadFailed: '无法加载图片',
+        positionSwitched: '先手/后手位置已更改',
+        saveOnlyAtRound5: '只能在第5回合保存记录',
         reset: '初始化',
         selectedCards: '已选择卡片',
         selectedCardsDescription: '点击图片放大',
@@ -233,7 +284,8 @@ const textData = {
         languageChanged: '语言已更改。',
         mobileOrientationTitle: '移动设备环境提示',
         mobileOrientationDescription: '为了获得更好的使用体验，建议使用横屏模式。',
-        confirm: '确定'
+        confirm: '确定',
+        nextStep: '下一步'
     }
 };
 
@@ -414,8 +466,20 @@ function initializeApp() {
     updateScoreDisplay();
     updateRoundDisplay();
     
+    // 선공 텍스트 효과 초기화
+    updateFirstPlayerEffect();
+    
     // 라운드 감소 버튼 초기 비활성화 (라운드 1에서는 감소 불가)
     document.getElementById('roundMinusBtn').disabled = true;
+    
+    // 전환 버튼 상태 초기화
+    updateSwitchButtonState();
+    
+    // 기록저장 버튼 상태 초기화
+    updateSaveRecordButtonState();
+    
+    // - 버튼 상태 초기화
+    updateMinusButtonStates();
     
     // 이벤트 리스너 등록
     document.getElementById('roundPlusBtn').addEventListener('click', incrementRound);
@@ -424,6 +488,14 @@ function initializeApp() {
     document.getElementById('firstPlayerSecondaryBtn').addEventListener('click', () => showSecondaryMissionModal('first'));
     document.getElementById('secondPlayerSecondaryBtn').addEventListener('click', () => showSecondaryMissionModal('second'));
     document.getElementById('resetAllBtn').addEventListener('click', resetAllGame);
+    
+    // 다음 버튼 이벤트 리스너
+    document.getElementById('nextToMissionBtn').addEventListener('click', () => showNextSections());
+    document.getElementById('nextToSecondaryBtn').addEventListener('click', () => showSecondaryMissionSection());
+    
+    // 기록 버튼 이벤트 리스너
+    document.getElementById('saveRecordBtn').addEventListener('click', saveGameRecord);
+    document.getElementById('viewRecordBtn').addEventListener('click', viewGameRecords);
     
     // 모달 닫기 이벤트 (클릭 + 터치)
     window.addEventListener('click', function(event) {
@@ -520,6 +592,19 @@ function initializeApp() {
 
 // 자동 언어 감지 및 설정 함수
 function detectAndSetLanguage() {
+    // 언어 변경으로 인한 새로고침인지 확인
+    const isLanguageChange = localStorage.getItem('isLanguageChangeReload') === 'true';
+    const selectedLanguage = localStorage.getItem('selectedLanguage');
+    
+    if (isLanguageChange && selectedLanguage) {
+        // 언어 변경으로 인한 새로고침인 경우 저장된 언어 사용
+        currentLanguage = selectedLanguage;
+        localStorage.removeItem('isLanguageChangeReload');
+        localStorage.removeItem('selectedLanguage');
+        updateLanguageSelectUI();
+        return;
+    }
+    
     // 브라우저 언어 설정 가져오기
     const browserLanguage = navigator.language || navigator.userLanguage;
     
@@ -743,6 +828,12 @@ function confirmCustomMissionSelection() {
         if (remainingCardsElement) {
             remainingCardsElement.style.display = 'none';
         }
+        
+        // 다음 버튼 표시
+        const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+        if (nextToSecondaryBtn) {
+            nextToSecondaryBtn.style.display = 'block';
+        }
     } else {
         // 선택 상태 초기화 (여러 개 선택된 경우)
         finalMissionCard = null;
@@ -753,11 +844,9 @@ function confirmCustomMissionSelection() {
         showNotification(selectedCustomMissions.length + textData[currentLanguage].customMissionsSet, 'success');
     }
     
-    // 커스텀 미션 버튼 비활성화
+    // 커스텀 미션 버튼 숨기기
     const customMissionBtn = document.getElementById('customMissionBtn');
-    customMissionBtn.disabled = true;
-    customMissionBtn.style.opacity = '0.5';
-    customMissionBtn.style.cursor = 'not-allowed';
+    customMissionBtn.style.display = 'none';
     
     closeCustomMissionModal();
 }
@@ -931,6 +1020,7 @@ function resetAllGame() {
         currentRound = 1;
         firstPlayerScore = 0;
         secondPlayerScore = 0;
+        isPositionSwitched = false; // 전환 상태 초기화
         selectedMapCard = null;
         finalMissionCard = null;
         remainingMissionCards = 3;
@@ -941,7 +1031,30 @@ function resetAllGame() {
         selectedSecondSecondaryCard = null; // 후공 세컨더리 카드 초기화
         currentSecondaryPlayer = null; // 현재 선택 중인 플레이어 초기화
         
-        // UI 초기화
+        // UI 초기화 - 모든 섹션 숨기기
+        const sectionsToHide = ['.mission-section', '.secondary-mission-section', '.selected-section', '.round-section', '.score-section', '.record-section'];
+        sectionsToHide.forEach(selector => {
+            const section = document.querySelector(selector);
+            if (section) {
+                section.style.display = 'none';
+                if (selector === '.score-section') {
+                    section.classList.remove('show');
+                }
+            }
+        });
+        
+        // 맵 섹션만 표시
+        const mapSection = document.querySelector('.map-section');
+        if (mapSection) {
+            mapSection.style.display = 'block';
+        }
+        
+        // 다음 버튼들 숨기기
+        const nextToMissionBtn = document.getElementById('nextToMissionBtn');
+        const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+        if (nextToMissionBtn) nextToMissionBtn.style.display = 'none';
+        if (nextToSecondaryBtn) nextToSecondaryBtn.style.display = 'none';
+        
         const mapCards = document.querySelectorAll('.map-card');
         mapCards.forEach(card => {
             card.classList.remove('selected', 'disabled', 'removed');
@@ -969,9 +1082,7 @@ function resetAllGame() {
         
         // 커스텀 미션 버튼 활성화
         const customMissionBtn = document.getElementById('customMissionBtn');
-        customMissionBtn.disabled = false;
-        customMissionBtn.style.opacity = '1';
-        customMissionBtn.style.cursor = 'pointer';
+        customMissionBtn.style.display = 'block';
         
         // 세컨더리 미션 버튼 활성화
         const firstPlayerSecondaryBtn = document.getElementById('firstPlayerSecondaryBtn');
@@ -1002,6 +1113,9 @@ function resetAllGame() {
         
         // 성공 메시지 표시
         showNotification(textData[currentLanguage].gameReset, 'success');
+        
+        // 페이지 즉시 새로고침
+        location.reload();
     }
 }
 
@@ -1055,6 +1169,9 @@ function incrementRound() {
         currentRound++;
         updateRoundDisplay();
         
+        // 선공 텍스트 애니메이션 트리거
+        triggerFirstPlayerAnimation();
+        
         // 라운드가 5에 도달하면 버튼 비활성화
         if (currentRound === 5) {
             document.getElementById('roundPlusBtn').disabled = true;
@@ -1064,6 +1181,12 @@ function incrementRound() {
         if (currentRound > 1) {
             document.getElementById('roundMinusBtn').disabled = false;
         }
+        
+        // 전환 버튼 활성화/비활성화 업데이트
+        updateSwitchButtonState();
+        
+        // 기록저장 버튼 상태 업데이트
+        updateSaveRecordButtonState();
     }
 }
 
@@ -1072,6 +1195,9 @@ function decrementRound() {
     if (currentRound > 1) {
         currentRound--;
         updateRoundDisplay();
+        
+        // 선공 텍스트 애니메이션 트리거
+        triggerFirstPlayerAnimation();
         
         // 라운드가 1에 도달하면 감소 버튼 비활성화
         if (currentRound === 1) {
@@ -1082,7 +1208,85 @@ function decrementRound() {
         if (currentRound < 5) {
             document.getElementById('roundPlusBtn').disabled = false;
         }
+        
+        // 전환 버튼 활성화/비활성화 업데이트
+        updateSwitchButtonState();
+        
+        // 기록저장 버튼 상태 업데이트
+        updateSaveRecordButtonState();
     }
+}
+
+// 선공 텍스트 효과 업데이트 함수
+function updateFirstPlayerEffect() {
+    const leftLabel = document.getElementById('leftPlayerLabel');
+    const rightLabel = document.getElementById('rightPlayerLabel');
+    const texts = textData[currentLanguage];
+    
+    // 모든 라벨에서 선공 효과 제거
+    if (leftLabel) leftLabel.classList.remove('first-player', 'animate');
+    if (rightLabel) rightLabel.classList.remove('first-player', 'animate');
+    
+    // 전환 상태와 라운드를 모두 고려하여 선공 결정
+    let isLeftFirst = false;
+    
+    if (isPositionSwitched) {
+        // 전환된 상태: 기본 라운드 로직의 반대
+        isLeftFirst = (currentRound % 2 === 0); // 짝수 라운드에 왼쪽이 선공
+    } else {
+        // 기본 상태: 라운드에 따라 결정
+        isLeftFirst = (currentRound % 2 === 1); // 홀수 라운드에 왼쪽이 선공
+    }
+    
+    // 현재 선공 텍스트에 지속적인 그라데이션 효과 적용
+    if (isLeftFirst) {
+        // 왼쪽이 선공
+        if (leftLabel && leftLabel.textContent === texts.firstLabel) {
+            leftLabel.classList.add('first-player');
+        }
+    } else {
+        // 오른쪽이 선공
+        if (rightLabel && rightLabel.textContent === texts.firstLabel) {
+            rightLabel.classList.add('first-player');
+        }
+    }
+}
+
+// 선공 텍스트 애니메이션 트리거 함수
+function triggerFirstPlayerAnimation() {
+    const leftLabel = document.getElementById('leftPlayerLabel');
+    const rightLabel = document.getElementById('rightPlayerLabel');
+    const texts = textData[currentLanguage];
+    
+    // 전환 상태와 라운드를 모두 고려하여 선공 결정
+    let isLeftFirst = false;
+    
+    if (isPositionSwitched) {
+        // 전환된 상태: 기본 라운드 로직의 반대
+        isLeftFirst = (currentRound % 2 === 0); // 짝수 라운드에 왼쪽이 선공
+    } else {
+        // 기본 상태: 라운드에 따라 결정
+        isLeftFirst = (currentRound % 2 === 1); // 홀수 라운드에 왼쪽이 선공
+    }
+    
+    // 현재 선공 텍스트에 애니메이션 클래스 추가
+    if (isLeftFirst) {
+        // 왼쪽이 선공
+        if (leftLabel && leftLabel.textContent === texts.firstLabel) {
+            leftLabel.classList.add('animate');
+        }
+    } else {
+        // 오른쪽이 선공
+        if (rightLabel && rightLabel.textContent === texts.firstLabel) {
+            rightLabel.classList.add('animate');
+        }
+    }
+    
+    // 3초 후 애니메이션 클래스 제거 (지속적인 그라데이션은 유지)
+    setTimeout(() => {
+        if (leftLabel) leftLabel.classList.remove('animate');
+        if (rightLabel) rightLabel.classList.remove('animate');
+    }, 3000);
 }
 
 // 라운드 표시 업데이트
@@ -1097,14 +1301,108 @@ function updateScoreOrder() {
     const rightLabel = document.getElementById('rightPlayerLabel');
     const texts = textData[currentLanguage];
     
-    if (currentRound % 2 === 1) {
-        // 홀수 라운드: 왼쪽 선공, 오른쪽 후공
-        leftLabel.textContent = texts.first;
-        rightLabel.textContent = texts.second;
+    // 전환 상태와 라운드를 모두 고려하여 선공/후공 결정
+    let isLeftFirst = false;
+    
+    if (isPositionSwitched) {
+        // 전환된 상태: 기본 라운드 로직의 반대
+        isLeftFirst = (currentRound % 2 === 0); // 짝수 라운드에 왼쪽이 선공
     } else {
-        // 짝수 라운드: 왼쪽 후공, 오른쪽 선공
-        leftLabel.textContent = texts.second;
-        rightLabel.textContent = texts.first;
+        // 기본 상태: 라운드에 따라 결정
+        isLeftFirst = (currentRound % 2 === 1); // 홀수 라운드에 왼쪽이 선공
+    }
+    
+    // 텍스트 설정
+    if (isLeftFirst) {
+        // 왼쪽이 선공, 오른쪽이 후공
+        leftLabel.textContent = texts.firstLabel;
+        rightLabel.textContent = texts.secondLabel;
+    } else {
+        // 왼쪽이 후공, 오른쪽이 선공
+        leftLabel.textContent = texts.secondLabel;
+        rightLabel.textContent = texts.firstLabel;
+    }
+    
+    // 선공 텍스트 효과 업데이트
+    updateFirstPlayerEffect();
+}
+
+// 선공/후공 위치 전환 함수
+function switchPlayerPositions() {
+    // 라운드 1에서만 전환 가능
+    if (currentRound !== 1) {
+        return;
+    }
+    
+    // 전환 상태 토글
+    isPositionSwitched = !isPositionSwitched;
+    
+    // 점수 변수 교체
+    const tempFirstScore = firstPlayerScore;
+    firstPlayerScore = secondPlayerScore;
+    secondPlayerScore = tempFirstScore;
+    
+    // DOM 요소의 점수 업데이트
+    const leftScore = document.getElementById('firstPlayerScore');
+    const rightScore = document.getElementById('secondPlayerScore');
+    leftScore.textContent = firstPlayerScore;
+    rightScore.textContent = secondPlayerScore;
+    
+    // 점수 카드 순서 업데이트
+    updateScoreOrder();
+    
+    // - 버튼 상태 업데이트
+    updateMinusButtonStates();
+    
+    // 전환 완료 알림
+    showNotification(textData[currentLanguage].positionSwitched || '선공/후공 위치가 변경되었습니다', 'success');
+}
+
+// 전환 버튼 상태 업데이트 함수
+function updateSwitchButtonState() {
+    const switchBtn = document.getElementById('scoreSwitchBtn');
+    if (switchBtn) {
+        // 라운드 1에서만 활성화
+        switchBtn.disabled = (currentRound !== 1);
+    }
+}
+
+// - 버튼 상태 업데이트 함수
+function updateMinusButtonStates() {
+    // 왼쪽 점수 카드의 - 버튼
+    const leftScore = parseInt(document.getElementById('firstPlayerScore').textContent) || 0;
+    const firstMinusBtn = document.querySelector('.score-card:first-child .score-btn.minus');
+    if (firstMinusBtn) {
+        firstMinusBtn.disabled = (leftScore === 0);
+        firstMinusBtn.style.opacity = (leftScore === 0) ? '0.5' : '1';
+        firstMinusBtn.style.cursor = (leftScore === 0) ? 'not-allowed' : 'pointer';
+    }
+    
+    // 오른쪽 점수 카드의 - 버튼
+    const rightScore = parseInt(document.getElementById('secondPlayerScore').textContent) || 0;
+    const secondMinusBtn = document.querySelector('.score-card:last-child .score-btn.minus');
+    if (secondMinusBtn) {
+        secondMinusBtn.disabled = (rightScore === 0);
+        secondMinusBtn.style.opacity = (rightScore === 0) ? '0.5' : '1';
+        secondMinusBtn.style.cursor = (rightScore === 0) ? 'not-allowed' : 'pointer';
+    }
+}
+
+// 기록저장 버튼 상태 업데이트 함수
+function updateSaveRecordButtonState() {
+    const saveRecordBtn = document.getElementById('saveRecordBtn');
+    if (saveRecordBtn) {
+        // 5라운드에서만 활성화
+        saveRecordBtn.disabled = (currentRound !== 5);
+        
+        // 버튼 스타일 업데이트
+        if (currentRound === 5) {
+            saveRecordBtn.style.opacity = '1';
+            saveRecordBtn.style.cursor = 'pointer';
+        } else {
+            saveRecordBtn.style.opacity = '0.6';
+            saveRecordBtn.style.cursor = 'not-allowed';
+        }
     }
 }
 
@@ -1116,12 +1414,13 @@ function changeScore(player, change) {
             firstPlayerScore = newScore;
             document.getElementById('firstPlayerScore').textContent = firstPlayerScore;
             
-            // 점수가 0이면 - 버튼 비활성화, 1 이상이면 활성화
+            // 실제 화면에 표시되는 점수로 - 버튼 상태 결정
+            const actualScore = parseInt(document.getElementById('firstPlayerScore').textContent) || 0;
             const firstMinusBtn = document.querySelector('.score-card:first-child .score-btn.minus');
             if (firstMinusBtn) {
-                firstMinusBtn.disabled = (firstPlayerScore === 0);
-                firstMinusBtn.style.opacity = (firstPlayerScore === 0) ? '0.5' : '1';
-                firstMinusBtn.style.cursor = (firstPlayerScore === 0) ? 'not-allowed' : 'pointer';
+                firstMinusBtn.disabled = (actualScore === 0);
+                firstMinusBtn.style.opacity = (actualScore === 0) ? '0.5' : '1';
+                firstMinusBtn.style.cursor = (actualScore === 0) ? 'not-allowed' : 'pointer';
             }
         }
     } else if (player === 'second') {
@@ -1130,12 +1429,13 @@ function changeScore(player, change) {
             secondPlayerScore = newScore;
             document.getElementById('secondPlayerScore').textContent = secondPlayerScore;
             
-            // 점수가 0이면 - 버튼 비활성화, 1 이상이면 활성화
+            // 실제 화면에 표시되는 점수로 - 버튼 상태 결정
+            const actualScore = parseInt(document.getElementById('secondPlayerScore').textContent) || 0;
             const secondMinusBtn = document.querySelector('.score-card:last-child .score-btn.minus');
             if (secondMinusBtn) {
-                secondMinusBtn.disabled = (secondPlayerScore === 0);
-                secondMinusBtn.style.opacity = (secondPlayerScore === 0) ? '0.5' : '1';
-                secondMinusBtn.style.cursor = (secondPlayerScore === 0) ? 'not-allowed' : 'pointer';
+                secondMinusBtn.disabled = (actualScore === 0);
+                secondMinusBtn.style.opacity = (actualScore === 0) ? '0.5' : '1';
+                secondMinusBtn.style.cursor = (actualScore === 0) ? 'not-allowed' : 'pointer';
             }
         }
     }
@@ -1196,6 +1496,12 @@ function selectMapCard(cardElement) {
     
     // 선택된 맵 카드도 클릭 불가능하게 설정
     cardElement.style.pointerEvents = 'none';
+    
+    // 다음 버튼 표시
+    const nextToMissionBtn = document.getElementById('nextToMissionBtn');
+    if (nextToMissionBtn) {
+        nextToMissionBtn.style.display = 'block';
+    }
 }
 
 // 미션 카드 생성 함수
@@ -1252,11 +1558,9 @@ function removeMissionCard(cardElement) {
         remainingMissionCards--;
         updateRemainingCards();
         
-        // 1개 이상 제거 시 커스텀 미션 버튼 비활성화
+        // 1개 이상 제거 시 커스텀 미션 버튼 숨기기
         const customMissionBtn = document.getElementById('customMissionBtn');
-        customMissionBtn.disabled = true;
-        customMissionBtn.style.opacity = '0.5';
-        customMissionBtn.style.cursor = 'not-allowed';
+        customMissionBtn.style.display = 'none';
         
         // 마지막 카드가 남았을 때
         if (remainingMissionCards === 1) {
@@ -1292,6 +1596,12 @@ function removeMissionCard(cardElement) {
                 const remainingCardsElement = document.getElementById('remainingCards');
                 if (remainingCardsElement) {
                     remainingCardsElement.style.display = 'none';
+                }
+                
+                // 다음 버튼 표시
+                const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+                if (nextToSecondaryBtn) {
+                    nextToSecondaryBtn.style.display = 'block';
                 }
             }
         }
@@ -1445,7 +1755,7 @@ function showSecondaryMissionModal(player) {
     
     currentSecondaryPlayer = player;
     const texts = textData[currentLanguage];
-    const playerName = player === 'first' ? texts.first : texts.second;
+    const playerName = player === 'first' ? texts.firstLabel : texts.secondLabel;
     
     // 모달 제목과 설명 설정
     document.getElementById('secondaryMissionModalTitle').textContent = `${playerName} ${texts.secondaryMissionCard}`;
@@ -1581,6 +1891,12 @@ function confirmSecondaryMissionSelection() {
     }
     
     closeSecondaryMissionModal();
+    
+    // 두 플레이어 모두 세컨더리 미션을 선택했는지 확인
+    if (selectedFirstSecondaryCard && selectedSecondSecondaryCard) {
+        // 세컨더리 미션 섹션 숨기고 나머지 섹션들 표시
+        showGameSections();
+    }
 }
 
 // 선공 세컨더리 표시 업데이트
@@ -1588,7 +1904,7 @@ function updateFirstSecondaryDisplay(cardData) {
     const selectedFirstSecondaryDisplay = document.getElementById('selectedFirstSecondaryDisplay');
     selectedFirstSecondaryDisplay.innerHTML = `
         <p id="selectedFirstSecondary">${cardData.title}</p>
-        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 140px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedFirstSecondaryImage()">
+        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedFirstSecondaryImage()">
     `;
 }
 
@@ -1597,7 +1913,7 @@ function updateSecondSecondaryDisplay(cardData) {
     const selectedSecondSecondaryDisplay = document.getElementById('selectedSecondSecondaryDisplay');
     selectedSecondSecondaryDisplay.innerHTML = `
         <p id="selectedSecondSecondary">${cardData.title}</p>
-        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 140px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedSecondSecondaryImage()">
+        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedSecondSecondaryImage()">
     `;
 }
 
@@ -1610,14 +1926,38 @@ function showSelectedMapImage() {
         const mapImage = img.src;
         const texts = textData[currentLanguage];
         
+        // 이미지 로드 실패 처리
+        const modalImg = document.getElementById('missionModalImage');
+        modalImg.onerror = function() {
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.style.cssText = `
+                width: 100%;
+                height: 200px;
+                background: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                color: #666;
+                font-size: 1rem;
+                text-align: center;
+                padding: 20px;
+                margin: 20px 0;
+            `;
+            fallback.textContent = `${texts.imageLoadFailed || '이미지를 불러올 수 없습니다'}: ${mapTitle}`;
+            this.parentNode.insertBefore(fallback, this.nextSibling);
+        };
+        
         // 모달 내용 설정
         document.getElementById('missionModalTitle').textContent = `${texts.selectedMap} ${mapTitle}`;
-        document.getElementById('missionModalImage').src = mapImage;
-        document.getElementById('missionModalImage').alt = mapTitle;
+        modalImg.src = mapImage;
+        modalImg.alt = mapTitle;
+        modalImg.style.display = 'block'; // 이미지 표시 초기화
         // 맵 이미지 크기를 더 크게 설정
-        document.getElementById('missionModalImage').style.maxWidth = '95vw';
-        document.getElementById('missionModalImage').style.maxHeight = '80vh';
-        document.getElementById('missionModalImage').style.objectFit = 'contain';
+        modalImg.style.maxWidth = '95vw';
+        modalImg.style.maxHeight = '80vh';
+        modalImg.style.objectFit = 'contain';
         // 설명 숨기기
         document.getElementById('missionModalDescription').style.display = 'none';
         
@@ -1638,14 +1978,38 @@ function showSelectedMissionImage() {
         const missionImage = img.src;
         const texts = textData[currentLanguage];
         
+        // 이미지 로드 실패 처리
+        const modalImg = document.getElementById('missionModalImage');
+        modalImg.onerror = function() {
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.style.cssText = `
+                width: 100%;
+                height: 200px;
+                background: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                color: #666;
+                font-size: 1rem;
+                text-align: center;
+                padding: 20px;
+                margin: 20px 0;
+            `;
+            fallback.textContent = `${texts.imageLoadFailed || '이미지를 불러올 수 없습니다'}: ${missionTitle}`;
+            this.parentNode.insertBefore(fallback, this.nextSibling);
+        };
+        
         // 모달 내용 설정
         document.getElementById('missionModalTitle').textContent = `${texts.finalMission} ${missionTitle}`;
-        document.getElementById('missionModalImage').src = missionImage;
-        document.getElementById('missionModalImage').alt = missionTitle;
+        modalImg.src = missionImage;
+        modalImg.alt = missionTitle;
+        modalImg.style.display = 'block'; // 이미지 표시 초기화
         // 이미지 크기를 세컨더리와 동일하게 설정
-        document.getElementById('missionModalImage').style.maxWidth = '80vw';
-        document.getElementById('missionModalImage').style.maxHeight = '60vh';
-        document.getElementById('missionModalImage').style.objectFit = 'contain';
+        modalImg.style.maxWidth = '80vw';
+        modalImg.style.maxHeight = '60vh';
+        modalImg.style.objectFit = 'contain';
         // 설명 숨기기
         document.getElementById('missionModalDescription').style.display = 'none';
         
@@ -1666,14 +2030,38 @@ function showSelectedFirstSecondaryImage() {
         const secondaryImage = img.src;
         const texts = textData[currentLanguage];
         
+        // 이미지 로드 실패 처리
+        const modalImg = document.getElementById('missionModalImage');
+        modalImg.onerror = function() {
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.style.cssText = `
+                width: 100%;
+                height: 200px;
+                background: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                color: #666;
+                font-size: 1rem;
+                text-align: center;
+                padding: 20px;
+                margin: 20px 0;
+            `;
+            fallback.textContent = `${texts.imageLoadFailed || '이미지를 불러올 수 없습니다'}: ${secondaryTitle}`;
+            this.parentNode.insertBefore(fallback, this.nextSibling);
+        };
+        
         // 모달 내용 설정
         document.getElementById('missionModalTitle').textContent = `${texts.firstSecondary} ${secondaryTitle}`;
-        document.getElementById('missionModalImage').src = secondaryImage;
-        document.getElementById('missionModalImage').alt = secondaryTitle;
+        modalImg.src = secondaryImage;
+        modalImg.alt = secondaryTitle;
+        modalImg.style.display = 'block'; // 이미지 표시 초기화
         // 이미지 크기를 더 작게 설정
-        document.getElementById('missionModalImage').style.maxWidth = '80vw';
-        document.getElementById('missionModalImage').style.maxHeight = '60vh';
-        document.getElementById('missionModalImage').style.objectFit = 'contain';
+        modalImg.style.maxWidth = '80vw';
+        modalImg.style.maxHeight = '60vh';
+        modalImg.style.objectFit = 'contain';
         // 설명 숨기기
         document.getElementById('missionModalDescription').style.display = 'none';
         
@@ -1694,14 +2082,38 @@ function showSelectedSecondSecondaryImage() {
         const secondaryImage = img.src;
         const texts = textData[currentLanguage];
         
+        // 이미지 로드 실패 처리
+        const modalImg = document.getElementById('missionModalImage');
+        modalImg.onerror = function() {
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.style.cssText = `
+                width: 100%;
+                height: 200px;
+                background: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                color: #666;
+                font-size: 1rem;
+                text-align: center;
+                padding: 20px;
+                margin: 20px 0;
+            `;
+            fallback.textContent = `${texts.imageLoadFailed || '이미지를 불러올 수 없습니다'}: ${secondaryTitle}`;
+            this.parentNode.insertBefore(fallback, this.nextSibling);
+        };
+        
         // 모달 내용 설정
         document.getElementById('missionModalTitle').textContent = `${texts.secondSecondary} ${secondaryTitle}`;
-        document.getElementById('missionModalImage').src = secondaryImage;
-        document.getElementById('missionModalImage').alt = secondaryTitle;
+        modalImg.src = secondaryImage;
+        modalImg.alt = secondaryTitle;
+        modalImg.style.display = 'block'; // 이미지 표시 초기화
         // 이미지 크기를 더 작게 설정
-        document.getElementById('missionModalImage').style.maxWidth = '80vw';
-        document.getElementById('missionModalImage').style.maxHeight = '60vh';
-        document.getElementById('missionModalImage').style.objectFit = 'contain';
+        modalImg.style.maxWidth = '80vw';
+        modalImg.style.maxHeight = '60vh';
+        modalImg.style.objectFit = 'contain';
         // 설명 숨기기
         document.getElementById('missionModalDescription').style.display = 'none';
         
@@ -1716,6 +2128,11 @@ function showSelectedSecondSecondaryImage() {
 
 // 언어 변경 함수
 function changeLanguage(language) {
+    // 언어 변경 플래그 설정
+    isLanguageChangeReload = true;
+    localStorage.setItem('isLanguageChangeReload', 'true');
+    localStorage.setItem('selectedLanguage', language);
+    
     currentLanguage = language;
     
     // 모달 닫기 플래그 초기화
@@ -1725,6 +2142,7 @@ function changeLanguage(language) {
     currentRound = 1;
     firstPlayerScore = 0;
     secondPlayerScore = 0;
+    isPositionSwitched = false; // 전환 상태 초기화
     selectedMapCard = null;
     finalMissionCard = null;
     missionCards = [];
@@ -1741,6 +2159,27 @@ function changeLanguage(language) {
     updateScoreDisplay();
     updateRoundDisplay();
     
+    // 모든 섹션 숨기기
+    const sectionsToHide = ['.mission-section', '.secondary-mission-section', '.selected-section', '.round-section', '.score-section'];
+    sectionsToHide.forEach(selector => {
+        const section = document.querySelector(selector);
+        if (section) {
+            section.style.display = 'none';
+        }
+    });
+    
+    // 맵 섹션만 표시
+    const mapSection = document.querySelector('.map-section');
+    if (mapSection) {
+        mapSection.style.display = 'block';
+    }
+    
+    // 다음 버튼들 숨기기
+    const nextToMissionBtn = document.getElementById('nextToMissionBtn');
+    const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+    if (nextToMissionBtn) nextToMissionBtn.style.display = 'none';
+    if (nextToSecondaryBtn) nextToSecondaryBtn.style.display = 'none';
+    
     // 라운드 버튼 상태 초기화
     document.getElementById('roundPlusBtn').disabled = false;
     document.getElementById('roundMinusBtn').disabled = true;
@@ -1749,6 +2188,9 @@ function changeLanguage(language) {
     updateLanguageSelectUI();
     
     showNotification(textData[currentLanguage].languageChanged , 'success');
+    
+    // 페이지 즉시 새로고침
+    location.reload();
 }
 
 // 언어 이름 가져오기
@@ -1795,6 +2237,33 @@ function updateSecondaryMissionCards() {}
 
 // 선택된 카드들 초기화
 function resetSelectedCards() {
+    // 전환 상태 초기화
+    isPositionSwitched = false;
+    
+    // 모든 섹션 숨기기
+    const sectionsToHide = ['.mission-section', '.secondary-mission-section', '.selected-section', '.round-section', '.score-section', '.record-section'];
+    sectionsToHide.forEach(selector => {
+        const section = document.querySelector(selector);
+        if (section) {
+            section.style.display = 'none';
+            if (selector === '.score-section') {
+                section.classList.remove('show');
+            }
+        }
+    });
+    
+    // 맵 섹션만 표시
+    const mapSection = document.querySelector('.map-section');
+    if (mapSection) {
+        mapSection.style.display = 'block';
+    }
+    
+    // 다음 버튼들 숨기기
+    const nextToMissionBtn = document.getElementById('nextToMissionBtn');
+    const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+    if (nextToMissionBtn) nextToMissionBtn.style.display = 'none';
+    if (nextToSecondaryBtn) nextToSecondaryBtn.style.display = 'none';
+    
     // 선택된 맵 초기화
     selectedMapCard = null;
     const selectedMapDisplay = document.getElementById('selectedMapDisplay');
@@ -1818,9 +2287,7 @@ function resetSelectedCards() {
     const firstPlayerSecondaryBtn = document.getElementById('firstPlayerSecondaryBtn');
     const secondPlayerSecondaryBtn = document.getElementById('secondPlayerSecondaryBtn');
     
-    customMissionBtn.disabled = false;
-    customMissionBtn.style.opacity = '1';
-    customMissionBtn.style.cursor = 'pointer';
+    customMissionBtn.style.display = 'block';
     
     firstPlayerSecondaryBtn.disabled = false;
     firstPlayerSecondaryBtn.style.opacity = '1';
@@ -1920,8 +2387,8 @@ function updateTexts() {
     // 점수칸 언어 업데이트
     const leftPlayerLabel = document.getElementById('leftPlayerLabel');
     const rightPlayerLabel = document.getElementById('rightPlayerLabel');
-    if (leftPlayerLabel) leftPlayerLabel.textContent = texts.first;
-    if (rightPlayerLabel) rightPlayerLabel.textContent = texts.second;
+    if (leftPlayerLabel) leftPlayerLabel.textContent = texts.firstLabel;
+    if (rightPlayerLabel) rightPlayerLabel.textContent = texts.secondLabel;
     
     // 모달 닫기 버튼들 업데이트
     const mapModalCloseBtn = document.getElementById('mapModalCloseBtn');
@@ -1941,6 +2408,339 @@ function updateTexts() {
     // 선택된 카드 설명
     const selectedCardsDescription = document.querySelector('.selected-cards-info p');
     if (selectedCardsDescription) selectedCardsDescription.textContent = texts.selectedCardsDescription;
+    
+    // 다음 단계 버튼들 텍스트 업데이트
+    const nextToMissionBtn = document.getElementById('nextToMissionBtn');
+    const nextToSecondaryBtn = document.getElementById('nextToSecondaryBtn');
+    if (nextToMissionBtn) nextToMissionBtn.textContent = texts.nextStep;
+    if (nextToSecondaryBtn) nextToSecondaryBtn.textContent = texts.nextStep;
+    
+    // 기록 버튼들 텍스트 업데이트
+    const saveRecordBtn = document.getElementById('saveRecordBtn');
+    const viewRecordBtn = document.getElementById('viewRecordBtn');
+    if (saveRecordBtn) saveRecordBtn.textContent = texts.saveRecord;
+    if (viewRecordBtn) viewRecordBtn.textContent = texts.viewRecord;
+}
+
+// 맵 선택 후 미션 카드 섹션만 표시하는 함수
+function showNextSections() {
+    // 맵 섹션 숨기기
+    const mapSection = document.querySelector('.map-section');
+    if (mapSection) {
+        mapSection.style.display = 'none';
+    }
+    
+    // 다른 섹션들 숨기기
+    const selectedSection = document.querySelector('.selected-section');
+    const roundSection = document.querySelector('.round-section');
+    const scoreSection = document.querySelector('.score-section');
+    const recordSection = document.querySelector('.record-section');
+    
+    if (selectedSection) selectedSection.style.display = 'none';
+    if (roundSection) roundSection.style.display = 'none';
+    if (scoreSection) {
+        scoreSection.style.display = 'none';
+        scoreSection.classList.remove('show');
+    }
+    // 기록 섹션은 숨기지 않음 (항상 표시)
+    
+    // 미션 섹션만 표시
+    const missionSection = document.querySelector('.mission-section');
+    if (missionSection) {
+        missionSection.style.display = 'block';
+        missionSection.style.animation = 'fadeIn 0.5s ease-out';
+    }
+}
+
+// 메인미션 완료 후 세컨더리 미션 섹션만 표시하는 함수
+function showSecondaryMissionSection() {
+    // 미션 섹션 숨기기
+    const missionSection = document.querySelector('.mission-section');
+    if (missionSection) {
+        missionSection.style.display = 'none';
+    }
+    
+    // 다른 섹션들 숨기기
+    const selectedSection = document.querySelector('.selected-section');
+    const roundSection = document.querySelector('.round-section');
+    const scoreSection = document.querySelector('.score-section');
+    const recordSection = document.querySelector('.record-section');
+    
+    if (selectedSection) selectedSection.style.display = 'none';
+    if (roundSection) roundSection.style.display = 'none';
+    if (scoreSection) {
+        scoreSection.style.display = 'none';
+        scoreSection.classList.remove('show');
+    }
+    // 기록 섹션은 숨기지 않음 (항상 표시)
+    
+    // 세컨더리 미션 섹션만 표시
+    const secondarySection = document.querySelector('.secondary-mission-section');
+    if (secondarySection) {
+        secondarySection.style.display = 'block';
+        secondarySection.style.animation = 'fadeIn 0.5s ease-out';
+    }
+}
+
+// 세컨더리 미션 완료 후 게임 섹션들 표시하는 함수
+function showGameSections() {
+    // 세컨더리 미션 섹션 숨기기
+    const secondarySection = document.querySelector('.secondary-mission-section');
+    if (secondarySection) {
+        secondarySection.style.display = 'none';
+    }
+    
+    // 선택된 카드 섹션 표시
+    setTimeout(() => {
+        const selectedSection = document.querySelector('.selected-section');
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+            selectedSection.style.animation = 'fadeIn 0.5s ease-out';
+        }
+    }, 300);
+    
+    // 라운드 섹션 표시
+    setTimeout(() => {
+        const roundSection = document.querySelector('.round-section');
+        if (roundSection) {
+            roundSection.style.display = 'flex';
+            roundSection.style.animation = 'fadeIn 0.5s ease-out';
+        }
+    }, 600);
+    
+    // 점수 섹션 표시
+    setTimeout(() => {
+        const scoreSection = document.querySelector('.score-section');
+        if (scoreSection) {
+            scoreSection.classList.add('show');
+            scoreSection.style.animation = 'fadeIn 0.5s ease-out';
+        }
+    }, 900);
+    
+    // 기록 섹션 표시
+    setTimeout(() => {
+        const recordSection = document.querySelector('.record-section');
+        if (recordSection) {
+            recordSection.style.display = 'block';
+            recordSection.style.animation = 'fadeIn 0.5s ease-out';
+        }
+        
+        // 기록저장 버튼 상태 초기화
+        updateSaveRecordButtonState();
+    }, 1200);
+}
+
+// 기록 초기화 함수 (디버깅용)
+function clearAllRecords() {
+    localStorage.removeItem('gameRecords');
+    console.log('모든 기록이 삭제되었습니다.');
+    showNotification('모든 기록이 삭제되었습니다.', 'info');
+}
+
+// 기록 저장 함수
+function saveGameRecord() {
+    // 5라운드에서만 저장 가능
+    if (currentRound !== 5) {
+        const texts = textData[currentLanguage];
+        showNotification(texts.saveOnlyAtRound5 || '5라운드에서만 기록을 저장할 수 있습니다', 'info');
+        return;
+    }
+    
+    console.log('기록저장 시작'); // 디버깅
+    
+    const texts = textData[currentLanguage];
+    
+    // 맵 카드 이름 가져오기
+    let mapName = null;
+    if (selectedMapCard) {
+        const mapTitleElement = selectedMapCard.querySelector('h3');
+        mapName = mapTitleElement ? mapTitleElement.textContent : null;
+    }
+    
+    // 미션 카드 이름 가져오기
+    let missionName = null;
+    if (finalMissionCard) {
+        if (typeof finalMissionCard === 'object' && finalMissionCard.name) {
+            // 객체인 경우 (커스텀 미션)
+            missionName = finalMissionCard.name;
+        } else if (finalMissionCard.querySelector) {
+            // DOM 요소인 경우
+            const missionTitleElement = finalMissionCard.querySelector('h3');
+            missionName = missionTitleElement ? missionTitleElement.textContent : null;
+        }
+    }
+    
+    // 세컨더리 카드 이름 가져오기
+    let firstSecondaryName = null;
+    let secondSecondaryName = null;
+    
+    if (selectedFirstSecondaryCard && typeof selectedFirstSecondaryCard === 'object') {
+        firstSecondaryName = selectedFirstSecondaryCard.title;
+    }
+    
+    if (selectedSecondSecondaryCard && typeof selectedSecondSecondaryCard === 'object') {
+        secondSecondaryName = selectedSecondSecondaryCard.title;
+    }
+    
+    // 실제 화면에 표시되는 점수 가져오기
+    const leftScoreElement = document.getElementById('firstPlayerScore');
+    const rightScoreElement = document.getElementById('secondPlayerScore');
+    const leftLabelElement = document.getElementById('leftPlayerLabel');
+    const rightLabelElement = document.getElementById('rightPlayerLabel');
+    
+    let actualFirstScore = firstPlayerScore;
+    let actualSecondScore = secondPlayerScore;
+    
+    // 전환 상태를 고려하여 실제 표시되는 점수 결정
+    if (isPositionSwitched) {
+        // 전환된 상태: 실제 화면 표시와 동일하게 저장
+        if (leftLabelElement && leftLabelElement.textContent === texts.first) {
+            // 왼쪽이 선공인 경우
+            actualFirstScore = parseInt(leftScoreElement.textContent) || 0;
+            actualSecondScore = parseInt(rightScoreElement.textContent) || 0;
+        } else {
+            // 오른쪽이 선공인 경우
+            actualFirstScore = parseInt(rightScoreElement.textContent) || 0;
+            actualSecondScore = parseInt(leftScoreElement.textContent) || 0;
+        }
+    }
+    
+    const gameData = {
+        timestamp: new Date().toISOString(),
+        currentRound: currentRound,
+        firstPlayerScore: actualFirstScore,
+        secondPlayerScore: actualSecondScore,
+        isPositionSwitched: isPositionSwitched, // 전환 상태 저장
+        selectedMapCard: mapName,
+        finalMissionCard: missionName,
+        selectedFirstSecondaryCard: firstSecondaryName,
+        selectedSecondSecondaryCard: secondSecondaryName,
+        language: currentLanguage
+    };
+    
+    console.log('저장할 데이터:', gameData); // 디버깅
+    
+    // localStorage에서 기존 기록 가져오기
+    let existingRecords = [];
+    try {
+        const storedRecords = localStorage.getItem('gameRecords');
+        if (storedRecords) {
+            existingRecords = JSON.parse(storedRecords);
+        }
+    } catch (error) {
+        console.error('기존 기록 로드 실패:', error);
+        existingRecords = [];
+    }
+    
+    console.log('기존 기록 수:', existingRecords.length); // 디버깅
+    
+    // 새 기록 추가
+    existingRecords.push(gameData);
+    
+    // 최대 100개 기록만 유지 (제한을 늘림)
+    if (existingRecords.length > 100) {
+        existingRecords.splice(0, existingRecords.length - 100);
+    }
+    
+    // localStorage에 저장
+    try {
+        localStorage.setItem('gameRecords', JSON.stringify(existingRecords));
+        console.log('저장 완료, 총 기록 수:', existingRecords.length); // 디버깅
+    } catch (error) {
+        console.error('기록 저장 실패:', error);
+        showNotification('기록 저장에 실패했습니다.', 'error');
+        return;
+    }
+    
+    // 성공 메시지 표시
+    showNotification('게임 기록이 저장되었습니다!', 'success');
+}
+
+// 기록 보기 함수
+function viewGameRecords() {
+    console.log('기록보기 시작'); // 디버깅
+    
+    let records = [];
+    try {
+        const storedRecords = localStorage.getItem('gameRecords');
+        if (storedRecords) {
+            records = JSON.parse(storedRecords);
+        }
+    } catch (error) {
+        console.error('기록 로드 실패:', error);
+        showNotification('기록을 불러오는데 실패했습니다.', 'error');
+        return;
+    }
+    
+    console.log('현재 저장된 기록들:', records); // 디버깅
+    
+    if (records.length === 0) {
+        showNotification('저장된 기록이 없습니다.', 'info');
+        return;
+    }
+    
+    // 기록을 시간순으로 정렬 (최신순)
+    records.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    let recordsText = '';
+    records.forEach((record, index) => {
+        const date = new Date(record.timestamp).toLocaleString('ko-KR');
+        const texts = textData[record.language] || textData['kr']; // 언어별 텍스트 가져오기
+        
+        recordsText += `${date}\n`;
+        recordsText += `   ${texts.round}: ${record.currentRound}/5\n`;
+        recordsText += `   ${texts.first}: ${record.firstPlayerScore}\n`;
+        recordsText += `   ${texts.second}: ${record.secondPlayerScore}\n`;
+        if (record.selectedMapCard) {
+            recordsText += `   ${texts.map}: ${record.selectedMapCard}\n`;
+        }
+        if (record.finalMissionCard) {
+            recordsText += `   ${texts.mission}: ${record.finalMissionCard}\n`;
+        }
+        if (record.selectedFirstSecondaryCard) {
+            recordsText += `   ${texts.firstSecondary} ${record.selectedFirstSecondaryCard}\n`;
+        }
+        if (record.selectedSecondSecondaryCard) {
+            recordsText += `   ${texts.secondSecondary} ${record.selectedSecondSecondaryCard}\n`;
+        }
+        
+        // 마지막 기록이 아닌 경우에만 구분선 추가
+        if (index < records.length - 1) {
+            recordsText += '\n────────────────────────\n\n';
+        } else {
+            recordsText += '\n';
+        }
+    });
+    
+    console.log('표시할 기록 텍스트:', recordsText); // 디버깅
+    
+    // 모달로 기록 표시
+    showRecordsModal(recordsText);
+}
+
+// 기록 모달 표시 함수
+function showRecordsModal(recordsText) {
+    const texts = textData[currentLanguage];
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'block';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>${texts.gameRecords}</h2>
+                <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <pre style="white-space: pre-wrap; font-family: inherit; background: #f8f9fa; padding: 15px; border-radius: 8px; max-height: 400px; overflow-y: auto;">${recordsText}</pre>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" onclick="this.closest('.modal').remove()">${texts.close}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
 }
 
 // 이미지 로드 실패 처리 함수

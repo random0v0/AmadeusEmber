@@ -15,6 +15,9 @@ let selectedSecondSecondaryCard = null; // 후공 세컨더리 카드
 let currentSecondaryPlayer = null; // 현재 선택 중인 플레이어 (first/second)
 let isModalClosing = false; // 모달 닫기 중복 실행 방지
 
+// 모달 스크롤 제어를 위한 변수
+let scrollPosition = 0;
+
 // 현재 언어 설정
 let currentLanguage = 'kr';
 
@@ -710,6 +713,9 @@ function showCustomMissionModal() {
     
     // 모달 표시
     document.getElementById('customMissionModal').style.display = 'block';
+    
+    // body 스크롤 방지
+    preventBodyScroll();
 }
 
 // 커스텀 미션 선택 토글
@@ -772,6 +778,9 @@ function closeCustomMissionModal() {
         modal.classList.remove('closing');
         selectedCustomMissions = [];
         isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
     }, 300);
 }
 
@@ -911,6 +920,9 @@ function showMapModal(cardElement) {
     
     // 모달 표시
     document.getElementById('mapModal').style.display = 'block';
+    
+    // body 스크롤 방지
+    preventBodyScroll();
 }
 
 // 맵 선택 모달 닫기
@@ -925,6 +937,9 @@ function closeMapModal() {
         modal.classList.remove('closing');
         currentModalCard = null;
         isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
     }, 300);
 }
 
@@ -970,6 +985,9 @@ function showMissionModal(cardElement) {
     
     // 모달 표시
     document.getElementById('missionModal').style.display = 'block';
+    
+    // body 스크롤 방지
+    preventBodyScroll();
 }
 
 // 미션 제거 모달 닫기
@@ -999,6 +1017,9 @@ function closeMissionModal() {
         
         currentModalCard = null;
         isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
     }, 300);
 }
 
@@ -1723,6 +1744,9 @@ function showMobileOrientationModal() {
     document.getElementById('mobileOrientationModalConfirmBtn').textContent = texts.confirm;
     
     document.getElementById('mobileOrientationModal').style.display = 'block';
+    
+    // body 스크롤 방지
+    preventBodyScroll();
 }
 
 // 모바일 가로 모드 추천 모달 닫기
@@ -1736,6 +1760,9 @@ function closeMobileOrientationModal() {
         modal.style.display = 'none';
         modal.classList.remove('closing');
         isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
     }, 300);
 }
 
@@ -1788,6 +1815,9 @@ function showSecondaryMissionModal(player) {
     
     // 모달 표시
     document.getElementById('secondaryMissionModal').style.display = 'block';
+    
+    // body 스크롤 방지
+    preventBodyScroll();
 }
 
 // 세컨더리 미션 선택 토글
@@ -1852,6 +1882,9 @@ function closeSecondaryMissionModal() {
         modal.classList.remove('closing');
         currentSecondaryPlayer = null;
         isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
     }, 300);
 }
 
@@ -2741,6 +2774,19 @@ function showRecordsModal(recordsText) {
     `;
     
     document.body.appendChild(modal);
+    
+    // body 스크롤 방지
+    preventBodyScroll();
+    
+    // 모달 닫기 이벤트 리스너 추가
+    const closeElements = modal.querySelectorAll('.close, .modal-btn');
+    closeElements.forEach(element => {
+        element.addEventListener('click', () => {
+            modal.remove();
+            // body 스크롤 복원
+            restoreBodyScroll();
+        });
+    });
 }
 
 // 이미지 로드 실패 처리 함수
@@ -2773,4 +2819,27 @@ function handleImageError(img, fallbackText) {
         fallback.textContent = fallbackText || errorMessages[currentLanguage] || 'Image Error';
         this.parentNode.insertBefore(fallback, this);
     };
+}
+
+// 모달 스크롤 제어 함수들
+function preventBodyScroll() {
+    // 현재 스크롤 위치 저장
+    scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // body에 modal-open 클래스 추가하여 스크롤 방지
+    document.body.classList.add('modal-open');
+    
+    // position: fixed를 사용하지 않으므로 top 스타일 제거
+    // document.body.style.top = `-${scrollPosition}px`;
+}
+
+function restoreBodyScroll() {
+    // modal-open 클래스 제거
+    document.body.classList.remove('modal-open');
+    
+    // body 스타일 초기화 (top 스타일이 없으므로 제거)
+    // document.body.style.top = '';
+    
+    // 원래 스크롤 위치로 복원
+    window.scrollTo(0, scrollPosition);
 } 

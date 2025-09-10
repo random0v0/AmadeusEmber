@@ -103,9 +103,7 @@ body {
 /* 모달이 열릴 때 body 스크롤 방지 */
 body.modal-open {
     overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
+    height: 100vh;
     /* 모바일 터치 스크롤 방지 */
     touch-action: none;
     /* 배경색 고정 - 원래 배경 그라데이션 유지 */

@@ -2897,23 +2897,17 @@ function preventBodyScroll() {
     // body에 modal-open 클래스 추가하여 스크롤 방지
     document.body.classList.add('modal-open');
     
-    // 현재 스크롤 위치로 고정 (position: fixed 사용)
-    document.body.style.top = `-${scrollPosition}px`;
+    // position: fixed를 사용하지 않으므로 top 스타일 제거
+    // document.body.style.top = `-${scrollPosition}px`;
 }
 
 function restoreBodyScroll() {
     // modal-open 클래스 제거
     document.body.classList.remove('modal-open');
     
-    // body 스타일 초기화
-    document.body.style.top = '';
+    // body 스타일 초기화 (top 스타일이 없으므로 제거)
+    // document.body.style.top = '';
     
-    // 원래 스크롤 위치로 복원 (더 안전한 방법)
-    setTimeout(() => {
-        window.scrollTo({
-            top: scrollPosition,
-            left: 0,
-            behavior: 'instant'
-        });
-    }, 10); // 약간의 지연을 두어 DOM 업데이트 완료 후 실행
+    // 스크롤 위치 복원이 필요 없음 (position: fixed를 사용하지 않으므로)
+    // window.scrollTo는 제거
 } 

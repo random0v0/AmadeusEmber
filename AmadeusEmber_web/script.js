@@ -978,7 +978,10 @@ function showMissionModal(cardElement) {
     
     // 닫기 버튼 텍스트 설정
     const closeBtn = document.getElementById('missionModalCloseBtn');
-    if (closeBtn) closeBtn.textContent = texts.close;
+    if (closeBtn) {
+        closeBtn.textContent = texts.close;
+        closeBtn.onclick = closeMissionModal; // 미션 제거 모달용 닫기 함수
+    }
     
     // 현재 카드 저장
     currentModalCard = cardElement;
@@ -1006,10 +1009,14 @@ function closeMissionModal() {
         const description = document.getElementById('missionModalDescription');
         const modalImage = document.getElementById('missionModalImage');
         
-        // 확인 버튼 다시 표시
-        confirmBtn.style.display = 'inline-block';
-        // 설명 다시 표시
-        description.style.display = 'block';
+        // 확인 버튼 다시 표시 (이미지 확대 모달에서는 숨겨져 있을 수 있음)
+        if (confirmBtn.style.display === 'none') {
+            confirmBtn.style.display = 'inline-block';
+        }
+        // 설명 다시 표시 (이미지 확대 모달에서는 숨겨져 있을 수 있음)
+        if (description.style.display === 'none') {
+            description.style.display = 'block';
+        }
         // 이미지 스타일 초기화
         modalImage.style.maxWidth = '';
         modalImage.style.maxHeight = '';
@@ -1998,6 +2005,10 @@ function showSelectedMapImage() {
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
         
+        // 닫기 버튼 이벤트 설정 (이미지 확대 모달용)
+        const closeBtn = document.getElementById('missionModalCloseBtn');
+        closeBtn.onclick = closeImageModal;
+        
         // body 스크롤 방지 (모달 표시 전에 먼저 실행)
         preventBodyScroll();
         
@@ -2052,6 +2063,10 @@ function showSelectedMissionImage() {
         // 확인 버튼 숨기기, 닫기 버튼만 표시
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
+        
+        // 닫기 버튼 이벤트 설정 (이미지 확대 모달용)
+        const closeBtn = document.getElementById('missionModalCloseBtn');
+        closeBtn.onclick = closeImageModal;
         
         // body 스크롤 방지 (모달 표시 전에 먼저 실행)
         preventBodyScroll();
@@ -2108,6 +2123,10 @@ function showSelectedFirstSecondaryImage() {
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
         
+        // 닫기 버튼 이벤트 설정 (이미지 확대 모달용)
+        const closeBtn = document.getElementById('missionModalCloseBtn');
+        closeBtn.onclick = closeImageModal;
+        
         // body 스크롤 방지 (모달 표시 전에 먼저 실행)
         preventBodyScroll();
         
@@ -2163,12 +2182,49 @@ function showSelectedSecondSecondaryImage() {
         const confirmBtn = document.getElementById('missionModalConfirmBtn');
         confirmBtn.style.display = 'none';
         
+        // 닫기 버튼 이벤트 설정 (이미지 확대 모달용)
+        const closeBtn = document.getElementById('missionModalCloseBtn');
+        closeBtn.onclick = closeImageModal;
+        
         // body 스크롤 방지 (모달 표시 전에 먼저 실행)
         preventBodyScroll();
         
         // 모달 표시
         document.getElementById('missionModal').style.display = 'block';
     }
+}
+
+// 이미지 확대 모달 전용 닫기 함수
+function closeImageModal() {
+    if (isModalClosing) return;
+    isModalClosing = true;
+    
+    const modal = document.getElementById('missionModal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+        
+        // 이미지 확대 모달 상태 초기화
+        const confirmBtn = document.getElementById('missionModalConfirmBtn');
+        const description = document.getElementById('missionModalDescription');
+        const modalImage = document.getElementById('missionModalImage');
+        
+        // 확인 버튼 다시 표시
+        confirmBtn.style.display = 'inline-block';
+        // 설명 다시 표시
+        description.style.display = 'block';
+        // 이미지 스타일 초기화
+        modalImage.style.maxWidth = '';
+        modalImage.style.maxHeight = '';
+        modalImage.style.objectFit = '';
+        
+        currentModalCard = null;
+        isModalClosing = false;
+        
+        // body 스크롤 복원
+        restoreBodyScroll();
+    }, 300);
 }
 
 // 언어 변경 함수

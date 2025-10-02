@@ -1943,21 +1943,58 @@ function confirmSecondaryMissionSelection() {
 function updateFirstSecondaryDisplay(cardData) {
     const selectedFirstSecondaryDisplay = document.getElementById('selectedFirstSecondaryDisplay');
     selectedFirstSecondaryDisplay.innerHTML = `
-        <p id="selectedFirstSecondary">${cardData.title}</p>
-        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedFirstSecondaryImage()">
+        <p id="selectedFirstSecondary" style="display: none;">${cardData.title}</p>
+        <img src="data/Image/firstBack.jpg" alt="선공 세컨더리 카드" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;">
     `;
+    
+    // 카드 정보를 저장하고 클릭 이벤트 추가
+    const imgElement = selectedFirstSecondaryDisplay.querySelector('img');
+    imgElement.dataset.title = cardData.title;
+    imgElement.dataset.imageSrc = `data/subtask/${currentLanguage}/${cardData.image}`;
+    imgElement.onclick = function() { flipFirstSecondaryCard(this.dataset.title, this.dataset.imageSrc); };
 }
 
 // 후공 세컨더리 표시 업데이트
 function updateSecondSecondaryDisplay(cardData) {
     const selectedSecondSecondaryDisplay = document.getElementById('selectedSecondSecondaryDisplay');
     selectedSecondSecondaryDisplay.innerHTML = `
-        <p id="selectedSecondSecondary">${cardData.title}</p>
-        <img src="data/subtask/${currentLanguage}/${cardData.image}" alt="${cardData.title}" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;" onclick="showSelectedSecondSecondaryImage()">
+        <p id="selectedSecondSecondary" style="display: none;">${cardData.title}</p>
+        <img src="data/Image/secBack.jpg" alt="후공 세컨더리 카드" style="width: 100%; max-width: 100px; height: auto; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer;">
     `;
+    
+    // 카드 정보를 저장하고 클릭 이벤트 추가
+    const imgElement = selectedSecondSecondaryDisplay.querySelector('img');
+    imgElement.dataset.title = cardData.title;
+    imgElement.dataset.imageSrc = `data/subtask/${currentLanguage}/${cardData.image}`;
+    imgElement.onclick = function() { flipSecondSecondaryCard(this.dataset.title, this.dataset.imageSrc); };
 }
 
-// 선택된 카드 이미지 확대 보기 함수들
+// 세컨더리 카드 뒤집기 함수들
+function flipFirstSecondaryCard(title, imageSrc) {
+    const selectedFirstSecondaryDisplay = document.getElementById('selectedFirstSecondaryDisplay');
+    const titleElement = document.getElementById('selectedFirstSecondary');
+    const imgElement = selectedFirstSecondaryDisplay.querySelector('img');
+    
+    // 카드를 앞면으로 뒤집고 확대 기능으로 변경
+    titleElement.style.display = 'block';
+    imgElement.src = imageSrc;
+    imgElement.alt = title;
+    imgElement.onclick = function() { showSelectedFirstSecondaryImage(); };
+}
+
+function flipSecondSecondaryCard(title, imageSrc) {
+    const selectedSecondSecondaryDisplay = document.getElementById('selectedSecondSecondaryDisplay');
+    const titleElement = document.getElementById('selectedSecondSecondary');
+    const imgElement = selectedSecondSecondaryDisplay.querySelector('img');
+    
+    // 카드를 앞면으로 뒤집고 확대 기능으로 변경
+    titleElement.style.display = 'block';
+    imgElement.src = imageSrc;
+    imgElement.alt = title;
+    imgElement.onclick = function() { showSelectedSecondSecondaryImage(); };
+}
+
+// 선택된 카 이미지 확대 보기 함수들
 function showSelectedMapImage() {
     const selectedMapDisplay = document.getElementById('selectedMapDisplay');
     const img = selectedMapDisplay.querySelector('img');

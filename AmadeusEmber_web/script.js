@@ -301,7 +301,7 @@ const languageData = {
             { name: '골목길', image: '골목길.png' }
         ],
         mainTasks: [
-            { name: '블랙박스 파편복구', image: '블랙박스 파편복구.png' },
+            { name: '블랙박스 파편회수', image: '블랙박스 파편회수.png' },
             { name: '통제구역 측면공격', image: '통제구역 측면공격.png' },
             { name: '통제구역 정면돌파', image: '통제구역 정면돌파.png' },
             { name: '통제구역 장거리운행', image: '통제구역 장거리운행.png' },
@@ -319,7 +319,7 @@ const languageData = {
             { name: '참수', image: '참수.png' },
             { name: '전멸', image: '전멸.png' },
             { name: '잠재 발굴지', image: '잠재 발굴지.png' },
-            { name: '자비로움', image: '자비로움.png' },
+            { name: '자비', image: '자비.png' },
             { name: '무기 테스트', image: '무기 테스트.png' }
         ]
     },

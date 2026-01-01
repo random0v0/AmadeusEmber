@@ -4,7 +4,9 @@ EMBER: Obsidian Protocol Third-Party Application - AmadeusEmber
 <div align="center">
   <br/>
   <br/>
-Last Update : 2026-01-01 Version 2.0
+Application Update : 2026-01-01 Version 2.1
+  
+  AmadeusLite Update : 2026-01-01
   <br/>
   <br/>
   <br/>

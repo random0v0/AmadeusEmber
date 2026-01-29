@@ -23,6 +23,14 @@ Application Update : 2026-01-01 Version 2.1
 Support languages : 한국어, English, 日本語, 中文
 
 
+
+
+License & Policy
+
+
+본 콘텐츠의 사용된 한글 카드는 '라쿤펀치'의 리소스를 활용했습니다, 본 프로젝트의 한글 카드 이미지 리소스는 라쿤펀치의 독점적 자산입니다. © Raccoonpunch Co., Ltd.
+
+
 -----------------------------------------------
 
 
